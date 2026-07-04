@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="PayHook">
+  <rect width="48" height="48" rx="11" fill="#0C768A"/>
+  <!-- notification bell -->
+  <path d="M24 11a7 7 0 0 0-7 7v4.2c0 .9-.35 1.76-.98 2.4L14 28h20l-2.02-2.4A3.4 3.4 0 0 1 31 23.2V18a7 7 0 0 0-7-7z" fill="#FFFFFF"/>
+  <path d="M21 31a3 3 0 0 0 6 0z" fill="#FFFFFF"/>
+  <!-- hook / webhook arrow accent -->
+  <path d="M30 32c3.3 0 6-2.7 6-6" fill="none" stroke="#2ECC71" stroke-width="2.6" stroke-linecap="round"/>
+  <circle cx="36" cy="26" r="2.4" fill="#2ECC71"/>
+</svg>

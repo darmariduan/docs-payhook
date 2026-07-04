@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="id" data-lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="Dokumentasi & Sandbox PayHook — Alternatif Payment Gateway Gratis. Ubah notifikasi pembayaran e-wallet & bank menjadi webhook otomatis." />
+    <meta name="author" content="PayHook" />
+    <title>PayHook — Dokumentasi &amp; Sandbox Developer</title>
+    <link rel="icon"
+        href="https://play-lh.googleusercontent.com/2hr1eOmfdFQOMcy45NYKalhf1xVwahIIj0VsYyZpOgMNlfAXWk95gzT16jpeZHh_8huUWZWj5-bBfxjQmnbD=w240-h480-rw"
+        type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+    <!-- ==================== HEADER ==================== -->
+    <header class="header">
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+        </button>
+        <a href="#pendahuluan" class="brand">
+            <img src="https://play-lh.googleusercontent.com/2hr1eOmfdFQOMcy45NYKalhf1xVwahIIj0VsYyZpOgMNlfAXWk95gzT16jpeZHh_8huUWZWj5-bBfxjQmnbD=w240-h480-rw"
+                alt="PayHook" class="logo" />
+            PayHook
+            <small class="id">Docs &amp; Sandbox</small>
+            <small class="en">Docs &amp; Sandbox</small>
+        </a>
+        <div class="spacer"></div>
+        <div class="header-actions">
+            <div class="lang-switch" role="group" aria-label="Language">
+                <button data-lang-btn="id" class="active">ID</button>
+                <button data-lang-btn="en">EN</button>
+            </div>
+            <a class="gh-link" href="https://github.com/" target="_blank" rel="noopener">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.4-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2.9-.3 1.9-.4 2.9-.4s2 .1 2.9.4c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.7.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z" />
+                </svg>
+                <span>GitHub</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="sidebar-backdrop" id="backdrop"></div>
+
+    <!-- ==================== LAYOUT ==================== -->
+    <div class="layout">
+
+        <!-- SIDEBAR -->
+        <nav class="sidebar" id="sidebar">
+            <h3 class="id">Pendahuluan</h3>
+            <h3 class="en">Introduction</h3>
+            <a href="#pendahuluan" class="nav-link"><span class="id">Tentang PayHook</span><span
+                    class="en">About PayHook</span></a>
+            <a href="#alur-kerja" class="nav-link"><span class="id">Alur Kerja</span><span
+                    class="en">How It Works</span></a>
+
+            <h3 class="id">Panduan Aplikasi</h3>
+            <h3 class="en">App Guide</h3>
+            <a href="#instalasi" class="nav-link"><span class="id">Instalasi &amp;
+                    Penggunaan</span><span class="en">Install &amp; Usage</span></a>
+            <a href="#konfigurasi" class="nav-link"><span class="id">Konfigurasi Webhook</span><span
+                    class="en">Webhook Configuration</span></a>
+            <a href="#aplikasi" class="nav-link"><span class="id">Aplikasi Didukung</span><span
+                    class="en">Supported Apps</span></a>
+
+            <h3 class="id">Referensi API</h3>
+            <h3 class="en">API Reference</h3>
+            <a href="#payload" class="nav-link"><span class="id">Format Payload</span><span
+                    class="en">Payload Format</span></a>
+            <a href="#autentikasi" class="nav-link"><span class="id">Autentikasi &amp;
+                    Verifikasi</span><span class="en">Auth &amp; Verification</span></a>
+            <a href="#integrasi" class="nav-link"><span class="id">Contoh Integrasi</span><span
+                    class="en">Integration Examples</span></a>
+
+            <h3 class="id">Uji Coba</h3>
+            <h3 class="en">Testing</h3>
+            <a href="#simulator" class="nav-link"><span class="id">Simulator / Sandbox</span><span
+                    class="en">Simulator / Sandbox</span></a>
+            <a href="#faq" class="nav-link">FAQ</a>
+        </nav>
+
+        <!-- CONTENT -->
+        <main class="content">
+
+            <!-- ============ PENDAHULUAN ============ -->
+            <section class="doc" id="pendahuluan">
+                <div class="hero">
+                    <span class="eyebrow">PayHook Developer</span>
+                    <h1><span class="id">Alternatif Payment Gateway Gratis</span><span
+                            class="en">Free Payment Gateway Alternative</span></h1>
+                    <p class="lead">
+                        <span class="id">Ubah notifikasi pembayaran dari e-wallet &amp; mobile
+                            banking menjadi webhook otomatis ke server Anda. Tanpa biaya transaksi,
+                            tanpa registrasi payment gateway.</span>
+                        <span class="en">Turn payment notifications from e-wallets &amp; mobile
+                            banking into automatic webhooks to your server. No transaction fees, no
+                            payment gateway registration.</span>
+                    </p>
+                    <div class="hero-badges">
+                        <span>💸 <span class="id">0% Biaya</span><span class="en">0%
+                                Fees</span></span>
+                        <span>🔒 100% <span class="id">Lokal</span><span
+                                class="en">Local</span></span>
+                        <span>⚡ Real-time Webhook</span>
+                        <span>🇮🇩 30+ <span class="id">Aplikasi</span><span
+                                class="en">Apps</span></span>
+                    </div>
+                </div>
+
+                <h2><span class="id">Tentang PayHook</span><span class="en">About PayHook</span>
+                </h2>
+                <p>
+                    <span class="id"><strong>PayHook</strong> adalah aplikasi Android yang membaca
+                        notifikasi pembayaran masuk dari aplikasi e-wallet dan mobile banking, lalu
+                        mengirimkannya sebagai webhook JSON ke endpoint server yang Anda tentukan.
+                        Cocok untuk UMKM, toko online, aplikasi SaaS, dan sistem pencatatan keuangan
+                        yang butuh notifikasi pembayaran otomatis tanpa biaya payment
+                        gateway.</span>
+                    <span class="en"><strong>PayHook</strong> is an Android app that reads incoming
+                        payment notifications from e-wallet and mobile banking apps, then delivers
+                        them as JSON webhooks to your server endpoint. Perfect for small businesses,
+                        online stores, SaaS apps, and bookkeeping systems that need automatic
+                        payment notifications without payment gateway fees.</span>
+                </p>
+
+                <div class="grid grid-3" style="margin:24px 0;">
+                    <div class="card feature">
+                        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
+                            </svg></div>
+                        <h3><span class="id">Real-time</span><span class="en">Real-time</span></h3>
+                        <p><span class="id">Notifikasi ditangkap &amp; diteruskan seketika saat dana
+                                masuk.</span><span class="en">Notifications captured &amp; forwarded
+                                the moment funds arrive.</span></p>
+                    </div>
+                    <div class="card feature">
+                        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg></div>
+                        <h3><span class="id">Privasi Penuh</span><span class="en">Full
+                                Privacy</span></h3>
+                        <p><span class="id">Semua data disimpan lokal (SQLite). Tidak ada server
+                                perantara.</span><span class="en">All data stored locally (SQLite).
+                                No intermediary server.</span></p>
+                    </div>
+                    <div class="card feature">
+                        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
+                                <line x1="4" y1="22" x2="4" y2="15" />
+                            </svg></div>
+                        <h3><span class="id">Gratis Selamanya</span><span class="en">Free
+                                Forever</span></h3>
+                        <p><span class="id">Tanpa biaya transaksi, tanpa langganan. Dana langsung ke
+                                rekening Anda.</span><span class="en">No transaction fees, no
+                                subscription. Funds go straight to your account.</span></p>
+                    </div>
+                </div>
+
+                <div class="callout tip">
+                    <strong class="id">Bagaimana dana diterima?</strong><strong class="en">How are
+                        funds received?</strong>
+                    <span class="id">Pembayaran tetap masuk langsung ke rekening bank / e-wallet
+                        Anda seperti biasa. PayHook hanya membaca <em>notifikasi</em> dari aplikasi
+                        tersebut dan meneruskan datanya — PayHook tidak menyentuh atau menahan dana
+                        Anda.</span>
+                    <span class="en">Payments still go directly into your bank / e-wallet account as
+                        usual. PayHook only reads the <em>notification</em> from those apps and
+                        forwards the data — PayHook never touches or holds your funds.</span>
+                </div>
+            </section>
+
+            <!-- ============ ALUR KERJA ============ -->
+            <section class="doc" id="alur-kerja">
+                <h2><span class="id">Alur Kerja</span><span class="en">How It Works</span></h2>
+                <p class="lead">
+                    <span class="id">Empat langkah dari pembayaran pelanggan hingga notifikasi
+                        diterima aplikasi Anda.</span>
+                    <span class="en">Four steps from a customer payment to a notification landing in
+                        your app.</span>
+                </p>
+
+                <div class="card" style="overflow-x:auto;">
+                    <svg viewBox="0 0 860 150" width="100%" style="min-width:640px" role="img"
+                        aria-label="Flow diagram">
+                        <defs>
+                            <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3"
+                                orient="auto">
+                                <path d="M0,0 L8,3 L0,6 Z" fill="#0C768A" />
+                            </marker>
+                        </defs>
+                        <!-- node 1 -->
+                        <rect x="10" y="40" width="170" height="70" rx="12" fill="#F1F5F9"
+                            stroke="#0C768A" />
+                        <text x="95" y="70" text-anchor="middle" font-family="Inter"
+                            font-weight="700" font-size="14" fill="#1A1A2E">1. Pelanggan
+                            bayar</text>
+                        <text x="95" y="90" text-anchor="middle" font-family="Inter" font-size="11"
+                            fill="#64748B">QRIS / transfer</text>
+                        <line x1="182" y1="75" x2="228" y2="75" stroke="#0C768A" stroke-width="2"
+                            marker-end="url(#arrow)" />
+                        <!-- node 2 -->
+                        <rect x="232" y="40" width="170" height="70" rx="12" fill="#F1F5F9"
+                            stroke="#0C768A" />
+                        <text x="317" y="70" text-anchor="middle" font-family="Inter"
+                            font-weight="700" font-size="14" fill="#1A1A2E">2. App
+                            bank/e-wallet</text>
+                        <text x="317" y="90" text-anchor="middle" font-family="Inter" font-size="11"
+                            fill="#64748B">notifikasi &quot;dana masuk&quot;</text>
+                        <line x1="404" y1="75" x2="450" y2="75" stroke="#0C768A" stroke-width="2"
+                            marker-end="url(#arrow)" />
+                        <!-- node 3 -->
+                        <rect x="454" y="40" width="170" height="70" rx="12" fill="#0C768A"
+                            stroke="#085463" />
+                        <text x="539" y="70" text-anchor="middle" font-family="Inter"
+                            font-weight="700" font-size="14" fill="#fff">3. PayHook</text>
+                        <text x="539" y="90" text-anchor="middle" font-family="Inter" font-size="11"
+                            fill="#c7e8e2">baca + ekstrak nominal</text>
+                        <line x1="626" y1="75" x2="672" y2="75" stroke="#0C768A" stroke-width="2"
+                            marker-end="url(#arrow)" />
+                        <!-- node 4 -->
+                        <rect x="676" y="40" width="174" height="70" rx="12" fill="#F1F5F9"
+                            stroke="#2ECC71" />
+                        <text x="763" y="70" text-anchor="middle" font-family="Inter"
+                            font-weight="700" font-size="14" fill="#1A1A2E">4. Server Anda</text>
+                        <text x="763" y="90" text-anchor="middle" font-family="Inter" font-size="11"
+                            fill="#64748B">webhook JSON (POST)</text>
+                    </svg>
+                </div>
+
+                <ol class="steps" style="margin-top:24px;">
+                    <li>
+                        <strong class="id">Pelanggan melakukan pembayaran</strong><strong
+                            class="en">Customer makes a payment</strong>
+                        <span class="id">ke QRIS / nomor rekening / e-wallet Anda seperti
+                            biasa.</span>
+                        <span class="en">to your QRIS / bank account / e-wallet as usual.</span>
+                    </li>
+                    <li>
+                        <strong class="id">Aplikasi bank / e-wallet menampilkan
+                            notifikasi</strong><strong class="en">The bank / e-wallet app shows a
+                            notification</strong>
+                        <span class="id">seperti &ldquo;Rp 300.000 sudah masuk ke rekening
+                            Anda&rdquo;.</span>
+                        <span class="en">such as &ldquo;Rp 300,000 has been credited to your
+                            account&rdquo;.</span>
+                    </li>
+                    <li>
+                        <strong class="id">PayHook membaca notifikasi</strong><strong
+                            class="en">PayHook reads the notification</strong>
+                        <span class="id">, mencocokkan kata kunci pembayaran masuk, dan mengekstrak
+                            nominal Rupiah.</span>
+                        <span class="en">, matches incoming-payment keywords, and extracts the
+                            Rupiah amount.</span>
+                    </li>
+                    <li>
+                        <strong class="id">PayHook mengirim webhook</strong><strong
+                            class="en">PayHook sends a webhook</strong>
+                        <span class="id">berupa JSON via HTTP POST ke semua endpoint aktif secara
+                            paralel.</span>
+                        <span class="en">as JSON via HTTP POST to all active endpoints in
+                            parallel.</span>
+                    </li>
+                </ol>
+            </section>
+
+            <!-- ============ INSTALASI ============ -->
+            <section class="doc" id="instalasi">
+                <h2><span class="id">Instalasi &amp; Penggunaan</span><span class="en">Install &amp;
+                        Usage</span></h2>
+                <p class="lead">
+                    <span class="id">Siapkan PayHook dalam beberapa menit.</span>
+                    <span class="en">Set up PayHook in a few minutes.</span>
+                </p>
+
+                <ol class="steps">
+                    <li>
+                        <strong class="id">Pasang aplikasi PayHook</strong><strong
+                            class="en">Install the PayHook app</strong>
+                        <span class="id">di perangkat Android (min. Android 8.0 / API 26) yang
+                            menerima notifikasi pembayaran Anda.</span>
+                        <span class="en">on the Android device (min. Android 8.0 / API 26) that
+                            receives your payment notifications.</span>
+                    </li>
+                    <li>
+                        <strong class="id">Beri izin Akses Notifikasi</strong><strong
+                            class="en">Grant Notification Access</strong>
+                        <span class="id">saat diminta. Izin ini wajib agar PayHook dapat membaca
+                            notifikasi.</span>
+                        <span class="en">when prompted. This permission is required for PayHook to
+                            read notifications.</span>
+                    </li>
+                    <li>
+                        <strong class="id">Pilih Aplikasi yang Dipantau</strong><strong
+                            class="en">Choose Monitored Apps</strong>
+                        <span class="id">— aktifkan e-wallet / bank yang ingin dipantau dari daftar
+                            aplikasi terpasang.</span>
+                        <span class="en">— enable the e-wallets / banks you want to monitor from
+                            your installed apps.</span>
+                    </li>
+                    <li>
+                        <strong class="id">Tambahkan Webhook</strong><strong class="en">Add a
+                            Webhook</strong>
+                        <span class="id">dengan URL endpoint, tipe autentikasi, dan token (lihat
+                            bagian Konfigurasi).</span>
+                        <span class="en">with your endpoint URL, auth type, and token (see the
+                            Configuration section).</span>
+                    </li>
+                    <li>
+                        <strong class="id">Uji dengan tombol Test</strong><strong class="en">Test
+                            with the Test button</strong>
+                        <span class="id">, atau gunakan Simulator di halaman ini, lalu lakukan
+                            transaksi kecil untuk verifikasi.</span>
+                        <span class="en">, or use the Simulator on this page, then run a small
+                            transaction to verify.</span>
+                    </li>
+                </ol>
+
+                <div class="callout warn">
+                    <strong class="id">Tips agar layanan tetap berjalan</strong><strong
+                        class="en">Tips to keep the service running</strong>
+                    <span class="id">Nonaktifkan optimisasi baterai untuk PayHook dan izinkan
+                        berjalan di latar belakang, agar notifikasi tidak terlewat saat layar
+                        mati.</span>
+                    <span class="en">Disable battery optimization for PayHook and allow background
+                        activity, so notifications are not missed when the screen is off.</span>
+                </div>
+            </section>
+
+            <!-- ============ KONFIGURASI ============ -->
+            <section class="doc" id="konfigurasi">
+                <h2><span class="id">Konfigurasi Webhook</span><span class="en">Webhook
+                        Configuration</span></h2>
+                <p>
+                    <span class="id">Setiap webhook memiliki pengaturan berikut. Anda dapat
+                        menambahkan lebih dari satu endpoint — semuanya menerima data secara
+                        bersamaan.</span>
+                    <span class="en">Each webhook has the settings below. You can add more than one
+                        endpoint — all of them receive data simultaneously.</span>
+                </p>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><span class="id">Kolom</span><span class="en">Field</span></th>
+                                <th><span class="id">Keterangan</span><span
+                                        class="en">Description</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>name</code></td>
+                                <td><span class="id">Label webhook, mis. &ldquo;Server
+                                        Produksi&rdquo;.</span><span class="en">Webhook label, e.g.
+                                        &ldquo;Production Server&rdquo;.</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>url</code></td>
+                                <td><span class="id">URL endpoint HTTPS yang menerima
+                                        POST.</span><span class="en">HTTPS endpoint URL that
+                                        receives the POST.</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>authType</code></td>
+                                <td><code>bearer</code> · <code>api_key</code> · <code>basic</code>
+                                    · <code>none</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>authHeaderName</code></td>
+                                <td><span class="id">Nama header untuk mode <code>api_key</code>
+                                        (default <code>X-API-Key</code>).</span><span
+                                        class="en">Header name for <code>api_key</code> mode
+                                        (default <code>X-API-Key</code>).</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>token</code></td>
+                                <td><span class="id">Token / kunci rahasia. Tersedia generator token
+                                        di aplikasi.</span><span class="en">Token / secret key. A
+                                        token generator is built into the app.</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>isEnabled</code></td>
+                                <td><span class="id">Aktif / nonaktif tanpa menghapus.</span><span
+                                        class="en">Enable / disable without deleting.</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="callout">
+                    <span class="id">Endpoint harus menggunakan <strong>HTTPS</strong>. PayHook
+                        menolak lalu lintas cleartext (HTTP biasa).</span>
+                    <span class="en">Endpoints must use <strong>HTTPS</strong>. PayHook rejects
+                        cleartext (plain HTTP) traffic.</span>
+                </div>
+            </section>
+
+            <!-- ============ APLIKASI DIDUKUNG ============ -->
+            <section class="doc" id="aplikasi">
+                <h2><span class="id">Aplikasi Didukung</span><span class="en">Supported Apps</span>
+                </h2>
+                <p>
+                    <span class="id">PayHook dapat memantau notifikasi aplikasi apa pun yang Anda
+                        pilih. Berikut daftar yang umum digunakan &amp; teruji.</span>
+                    <span class="en">PayHook can monitor notifications from any app you choose.
+                        Below are the commonly used &amp; tested ones.</span>
+                </p>
+
+                <h3>E-Wallet</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><span class="id">Aplikasi</span><span class="en">App</span></th>
+                                <th>Package</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>DANA</td>
+                                <td><code>com.dana.id</code></td>
+                                <td><span class="badge on"><span class="id">Aktif</span><span
+                                            class="en">Active</span></span></td>
+                            </tr>
+                            <tr>
+                                <td>GoPay (Gojek)</td>
+                                <td><code>com.gojek.app</code></td>
+                                <td><span class="badge on"><span class="id">Aktif</span><span
+                                            class="en">Active</span></span></td>
+                            </tr>
+                            <tr>
+                                <td>ShopeePay</td>
+                                <td><code>com.shopee.id</code></td>
+                                <td><span class="badge on"><span class="id">Aktif</span><span
+                                            class="en">Active</span></span></td>
+                            </tr>
+                            <tr>
+                                <td>OVO</td>
+                                <td><code>id.co.ovo.app</code></td>
+                                <td><span class="badge on"><span class="id">Aktif</span><span
+                                            class="en">Active</span></span></td>
+                            </tr>
+                            <tr>
+                                <td>LinkAja</td>
+                                <td><code>com.linkaja</code></td>
+                                <td><span class="badge on"><span class="id">Aktif</span><span
+                                            class="en">Active</span></span></td>
+                            </tr>
+                            <tr>
+                                <td>i.saku</td>
+                                <td><code>id.co.isaku</code></td>
+                                <td><span class="badge on"><span class="id">Aktif</span><span
+                                            class="en">Active</span></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Bank / Mobile Banking</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><span class="id">Aplikasi</span><span class="en">App</span></th>
+                                <th>Package</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>BCA Mobile</td>
+                                <td><code>com.bca</code></td>
+                                <td><span class="badge on"><span class="id">Aktif</span><span
+                                            class="en">Active</span></span></td>
+                            </tr>
+                            <tr>
+                                <td>myBCA</td>
+                                <td><code>com.bca.myBCA</code></td>
+                                <td><span class="badge on"><span class="id">Aktif</span><span
+                                            class="en">Active</span></span></td>
+                            </tr>
+                            <tr>
+                                <td>BRImo</td>
+                                <td><code>id.co.bri.brimo</code></td>
+                                <td><span class="badge on"><span class="id">Aktif</span><span
+                                            class="en">Active</span></span></td>
+                            </tr>
+                            <tr>
+                                <td>BNI Mobile</td>
+                                <td><code>com.bni.mobilebanking</code></td>
+                                <td><span class="badge on"><span class="id">Aktif</span><span
+                                            class="en">Active</span></span></td>
+                            </tr>
+                            <tr>
+                                <td>wondr by BNI</td>
+                                <td><code>id.co.bni.wondr</code></td>
+                                <td><span class="badge on"><span class="id">Aktif</span><span
+                                            class="en">Active</span></span></td>
+                            </tr>
+                            <tr>
+                                <td>Livin' by Mandiri</td>
+                                <td><code>id.bmri.livin</code></td>
+                                <td><span class="badge on"><span class="id">Aktif</span><span
+                                            class="en">Active</span></span></td>
+                            </tr>
+                            <tr>
+                                <td>BSI Mobile</td>
+                                <td><code>com.bsi.universalbanking</code></td>
+                                <td><span class="badge on"><span class="id">Aktif</span><span
+                                            class="en">Active</span></span></td>
+                            </tr>
+                            <tr>
+                                <td>Jenius (BTPN)</td>
+                                <td><code>com.btpn.dc</code></td>
+                                <td><span class="badge on"><span class="id">Aktif</span><span
+                                            class="en">Active</span></span></td>
+                            </tr>
+                            <tr>
+                                <td>CIMB Niaga</td>
+                                <td><code>id.co.cimbniaga.mobile.android</code></td>
+                                <td><span class="badge off"><span class="id">Nonaktif</span><span
+                                            class="en">Inactive</span></span></td>
+                            </tr>
+                            <tr>
+                                <td>Bank Jago</td>
+                                <td><code>id.co.bankjago.app</code></td>
+                                <td><span class="badge off"><span class="id">Nonaktif</span><span
+                                            class="en">Inactive</span></span></td>
+                            </tr>
+                            <tr>
+                                <td>SeaBank</td>
+                                <td><code>id.co.seabank.app</code></td>
+                                <td><span class="badge off"><span class="id">Nonaktif</span><span
+                                            class="en">Inactive</span></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ============ PAYLOAD ============ -->
+            <section class="doc" id="payload">
+                <h2><span class="id">Format Payload</span><span class="en">Payload Format</span>
+                </h2>
+                <p>
+                    <span class="id">PayHook mengirim <strong>HTTP POST</strong> dengan body JSON
+                        berikut ke endpoint Anda.</span>
+                    <span class="en">PayHook sends an <strong>HTTP POST</strong> with the following
+                        JSON body to your endpoint.</span>
+                </p>
+
+                <h3>Request Headers</h3>
+                <div class="code-block">
+                    <pre><code>POST /your-endpoint HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+User-Agent: PayHook-Android/1.0
+Authorization: Bearer &lt;token&gt;      # tergantung tipe auth / depends on auth type</code></pre>
+                </div>
+
+                <h3>Body (JSON)</h3>
+                <div class="code-block">
+                    <pre><code>{
+  "amount": 300000,
+  "source": "BCA Mobile",
+  "reference": "PH-1711425600000",
+  "timestamp": "2026-03-26 10:26:00",
+  "package_name": "com.bca",
+  "notification_title": "Uang masuk dari John",
+  "notification_text": "Rp 300.000,00 sudah masuk ke rekening Anda",
+  "sent_by": "PayHook"
+}</code></pre>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Field</th>
+                                <th>Type</th>
+                                <th><span class="id">Keterangan</span><span
+                                        class="en">Description</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>amount</code></td>
+                                <td>number (long)</td>
+                                <td><span class="id">Nominal Rupiah, bilangan bulat tanpa
+                                        desimal.</span><span class="en">Rupiah amount, integer
+                                        without decimals.</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>source</code></td>
+                                <td>string</td>
+                                <td><span class="id">Nama aplikasi sumber, mis. &ldquo;BCA
+                                        Mobile&rdquo;.</span><span class="en">Source app name, e.g.
+                                        &ldquo;BCA Mobile&rdquo;.</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>reference</code></td>
+                                <td>string</td>
+                                <td><span class="id">ID unik format
+                                        <code>PH-{epoch_millis}</code>.</span><span
+                                        class="en">Unique ID in <code>PH-{epoch_millis}</code>
+                                        format.</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>timestamp</code></td>
+                                <td>string</td>
+                                <td><span class="id">Waktu deteksi, format
+                                        <code>yyyy-MM-dd HH:mm:ss</code> (waktu
+                                        perangkat).</span><span class="en">Detection time,
+                                        <code>yyyy-MM-dd HH:mm:ss</code> (device local time).</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>package_name</code></td>
+                                <td>string</td>
+                                <td><span class="id">Nama package Android aplikasi
+                                        sumber.</span><span class="en">Android package name of the
+                                        source app.</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>notification_title</code></td>
+                                <td>string</td>
+                                <td><span class="id">Judul notifikasi asli.</span><span
+                                        class="en">Original notification title.</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>notification_text</code></td>
+                                <td>string</td>
+                                <td><span class="id">Isi teks notifikasi asli.</span><span
+                                        class="en">Original notification text body.</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>sent_by</code></td>
+                                <td>string</td>
+                                <td><span class="id">Selalu bernilai
+                                        <code>"PayHook"</code>.</span><span class="en">Always
+                                        <code>"PayHook"</code>.</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout tip">
+                    <strong class="id">Respons yang diharapkan</strong><strong class="en">Expected
+                        response</strong>
+                    <span class="id">Balas dengan status <code>2xx</code> agar dianggap sukses.
+                        Status lain (4xx/5xx) atau timeout (&gt;15 detik) dicatat sebagai gagal di
+                        log aktivitas aplikasi.</span>
+                    <span class="en">Reply with a <code>2xx</code> status to be counted as success.
+                        Other statuses (4xx/5xx) or a timeout (&gt;15s) are logged as failed in the
+                        app's activity log.</span>
+                </div>
+            </section>
+
+            <!-- ============ AUTENTIKASI ============ -->
+            <section class="doc" id="autentikasi">
+                <h2><span class="id">Autentikasi &amp; Verifikasi</span><span class="en">Auth &amp;
+                        Verification</span></h2>
+                <p>
+                    <span class="id">PayHook mendukung 4 tipe autentikasi yang dikirim sebagai
+                        header HTTP.</span>
+                    <span class="en">PayHook supports 4 authentication types, sent as HTTP
+                        headers.</span>
+                </p>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>authType</th>
+                                <th>Header</th>
+                                <th><span class="id">Contoh</span><span class="en">Example</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>bearer</code></td>
+                                <td><code>Authorization</code></td>
+                                <td><code>Bearer &lt;token&gt;</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>api_key</code></td>
+                                <td><code>X-API-Key</code> <span class="id">(atau
+                                        kustom)</span><span class="en">(or custom)</span></td>
+                                <td><code>&lt;token&gt;</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>basic</code></td>
+                                <td><code>Authorization</code></td>
+                                <td><code>Basic base64(&lt;token&gt;)</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>none</code></td>
+                                <td>—</td>
+                                <td><span class="id">Tanpa autentikasi</span><span class="en">No
+                                        authentication</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="callout warn">
+                    <strong class="id">Verifikasi di sisi server</strong><strong class="en">Verify
+                        on your server</strong>
+                    <span class="id">Selalu validasi header autentikasi pada setiap request masuk
+                        dan tolak jika token tidak cocok. Gunakan HTTPS dan jangan pernah menaruh
+                        token di URL.</span>
+                    <span class="en">Always validate the auth header on every incoming request and
+                        reject mismatched tokens. Use HTTPS and never put the token in the
+                        URL.</span>
+                </div>
+            </section>
+
+            <!-- ============ INTEGRASI ============ -->
+            <section class="doc" id="integrasi">
+                <h2><span class="id">Contoh Integrasi</span><span class="en">Integration
+                        Examples</span></h2>
+                <p>
+                    <span class="id">Contoh menerima &amp; memverifikasi webhook PayHook di berbagai
+                        bahasa.</span>
+                    <span class="en">Examples of receiving &amp; verifying a PayHook webhook in
+                        several languages.</span>
+                </p>
+
+                <div class="tabs" id="integrationTabs">
+                    <div class="tab-bar">
+                        <button class="active" data-tab="php">PHP</button>
+                        <button data-tab="laravel">Laravel</button>
+                        <button data-tab="node">Node.js</button>
+                        <button data-tab="python">Python</button>
+                    </div>
+
+                    <div class="tab-panel active" data-panel="php">
+                        <div class="code-block">
+                            <pre><code>&lt;?php
+// webhook.php — endpoint penerima PayHook
+$expected = 'YOUR_SECRET_TOKEN';
+$auth = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+
+if ($auth !== 'Bearer ' . $expected) {
+    http_response_code(401);
+    exit(json_encode(['error' =&gt; 'Unauthorized']));
+}
+
+$payload = json_decode(file_get_contents('php://input'), true);
+if (!$payload) { http_response_code(400); exit; }
+
+// Simpan pembayaran
+file_put_contents('payments.log',
+    sprintf("[%s] %s Rp%s ref=%s\n",
+        $payload['timestamp'], $payload['source'],
+        number_format($payload['amount'], 0, ',', '.'),
+        $payload['reference']
+    ), FILE_APPEND);
+
+http_response_code(200);
+echo json_encode(['status' =&gt; 'ok']);</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="tab-panel" data-panel="laravel">
+                        <div class="code-block">
+                            <pre><code>// routes/api.php
+Route::post('/payhook', function (Illuminate\Http\Request $request) {
+    if ($request->bearerToken() !== config('services.payhook.token')) {
+        return response()->json(['error' =&gt; 'Unauthorized'], 401);
+    }
+
+    $data = $request->validate([
+        'amount'    =&gt; 'required|integer',
+        'source'    =&gt; 'required|string',
+        'reference' =&gt; 'required|string',
+        'timestamp' =&gt; 'required|string',
+    ]);
+
+    Payment::updateOrCreate(
+        ['reference' =&gt; $data['reference']], // idempoten
+        ['amount' =&gt; $data['amount'], 'source' =&gt; $data['source']]
+    );
+
+    return response()->json(['status' =&gt; 'ok']);
+});</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="tab-panel" data-panel="node">
+                        <div class="code-block">
+                            <pre><code>// server.js — Express
+const express = require('express');
+const app = express();
+app.use(express.json());
+
+const TOKEN = process.env.PAYHOOK_TOKEN;
+
+app.post('/payhook', (req, res) =&gt; {
+  if (req.headers.authorization !== `Bearer ${TOKEN}`) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  const { amount, source, reference, timestamp } = req.body;
+  console.log(`[${timestamp}] ${source} Rp${amount} ref=${reference}`);
+
+  // TODO: simpan ke database (idempoten berdasarkan reference)
+  res.json({ status: 'ok' });
+});
+
+app.listen(3000, () =&gt; console.log('PayHook listener on :3000'));</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="tab-panel" data-panel="python">
+                        <div class="code-block">
+                            <pre><code># app.py — Flask
+import os
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+TOKEN = os.environ["PAYHOOK_TOKEN"]
+
+@app.post("/payhook")
+def payhook():
+    if request.headers.get("Authorization") != f"Bearer {TOKEN}":
+        return jsonify(error="Unauthorized"), 401
+
+    data = request.get_json(silent=True) or {}
+    print(f"[{data.get('timestamp')}] {data.get('source')} "
+          f"Rp{data.get('amount')} ref={data.get('reference')}")
+
+    # TODO: simpan ke DB (idempoten berdasarkan reference)
+    return jsonify(status="ok")
+
+if __name__ == "__main__":
+    app.run(port=3000)</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ SIMULATOR ============ -->
+            <section class="doc" id="simulator">
+                <h2><span class="id">Simulator / Sandbox</span><span class="en">Simulator /
+                        Sandbox</span></h2>
+                <p class="lead">
+                    <span class="id">Susun payload PayHook, salin sebagai cURL/kode, atau kirim uji
+                        coba langsung ke endpoint Anda — tanpa perlu transaksi sungguhan.</span>
+                    <span class="en">Build a PayHook payload, copy it as cURL/code, or send a live
+                        test to your endpoint — without any real transaction.</span>
+                </p>
+
+                <div class="sim-grid">
+                    <!-- FORM -->
+                    <div class="card sim-form">
+                        <label for="simSource"><span class="id">Sumber Pembayaran</span><span
+                                class="en">Payment Source</span></label>
+                        <select id="simSource"></select>
+
+                        <label for="simAmount"><span class="id">Nominal (Rp)</span><span
+                                class="en">Amount (Rp)</span></label>
+                        <input type="number" id="simAmount" value="300000" min="1" />
+
+                        <label for="simSender"><span class="id">Nama Pengirim</span><span
+                                class="en">Sender Name</span></label>
+                        <input type="text" id="simSender" value="John" />
+
+                        <label for="simTitle"><span class="id">Judul Notifikasi</span><span
+                                class="en">Notification Title</span></label>
+                        <input type="text" id="simTitle" />
+
+                        <label for="simText"><span class="id">Teks Notifikasi</span><span
+                                class="en">Notification Text</span></label>
+                        <textarea id="simText"></textarea>
+                        <div class="hint"><span class="id">Otomatis terisi sesuai sumber &amp;
+                                nominal. Bisa Anda ubah.</span><span class="en">Auto-filled from
+                                source &amp; amount. You can edit it.</span></div>
+
+                        <hr style="border:none;border-top:1px solid var(--border);margin:20px 0;" />
+
+                        <label for="simUrl"><span class="id">URL Webhook Anda</span><span
+                                class="en">Your Webhook URL</span></label>
+                        <input type="url" id="simUrl" placeholder="https://webhook.site/xxxx" />
+
+                        <label for="simAuthType"><span class="id">Tipe Auth</span><span
+                                class="en">Auth Type</span></label>
+                        <select id="simAuthType">
+                            <option value="bearer">Bearer</option>
+                            <option value="api_key">API Key</option>
+                            <option value="basic">Basic</option>
+                            <option value="none">None</option>
+                        </select>
+
+                        <div id="headerNameWrap" style="display:none;">
+                            <label for="simHeaderName"><span class="id">Nama Header</span><span
+                                    class="en">Header Name</span></label>
+                            <input type="text" id="simHeaderName" value="X-API-Key" />
+                        </div>
+
+                        <div id="tokenWrap">
+                            <label for="simToken">Token</label>
+                            <input type="text" id="simToken" placeholder="YOUR_SECRET_TOKEN" />
+                        </div>
+
+                        <div class="btn-row">
+                            <button class="btn btn-secondary" id="btnGenerate"><span class="id">Buat
+                                    Payload</span><span class="en">Generate Payload</span></button>
+                            <button class="btn btn-primary" id="btnSend">
+                                <span class="id">Kirim Test (Live)</span><span class="en">Send Test
+                                    (Live)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- OUTPUT -->
+                    <div class="sim-output">
+                        <div class="phone">
+                            <div class="notif">
+                                <div class="app-ico" id="previewIco">B</div>
+                                <div>
+                                    <div class="n-title" id="previewTitle">Uang masuk dari John
+                                    </div>
+                                    <div class="n-text" id="previewText">Rp 300.000,00 sudah masuk
+                                        ke rekening Anda</div>
+                                    <div class="n-app" id="previewApp">BCA Mobile</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 style="margin-top:22px;"><span class="id">Payload JSON</span><span
+                                class="en">JSON Payload</span></h3>
+                        <div class="code-block">
+                            <button class="copy-btn" data-copy-target="jsonOut"><span
+                                    class="id">Salin</span><span class="en">Copy</span></button>
+                            <pre><code id="jsonOut">// klik "Buat Payload"</code></pre>
+                        </div>
+
+                        <div class="btn-row" style="margin-top:0;">
+                            <button class="btn btn-secondary" id="btnCurl"><span class="id">Salin
+                                    cURL</span><span class="en">Copy cURL</span></button>
+                        </div>
+
+                        <div id="resultArea"></div>
+                    </div>
+                </div>
+
+                <div class="callout" style="margin-top:24px;">
+                    <strong class="id">Tentang mode &ldquo;Kirim Test (Live)&rdquo;</strong><strong
+                        class="en">About &ldquo;Send Test (Live)&rdquo; mode</strong>
+                    <span class="id">Karena PayHook berjalan lokal tanpa server, pengiriman langsung
+                        dari browser diteruskan lewat relay serverless opsional (untuk mengatasi
+                        CORS). Jika relay belum dikonfigurasi, gunakan tombol <em>Salin cURL</em>
+                        lalu jalankan di terminal Anda.</span>
+                    <span class="en">Because PayHook runs locally with no server, live sends from
+                        the browser are forwarded through an optional serverless relay (to work
+                        around CORS). If the relay is not configured, use the <em>Copy cURL</em>
+                        button and run it in your terminal.</span>
+                </div>
+            </section>
+
+            <!-- ============ FAQ ============ -->
+            <section class="doc" id="faq">
+                <h2>FAQ &amp; <span class="id">Pemecahan Masalah</span><span
+                        class="en">Troubleshooting</span></h2>
+
+                <h3><span class="id">Webhook tidak terkirim, kenapa?</span><span class="en">Webhook
+                        not being sent, why?</span></h3>
+                <p><span class="id">Pastikan izin Akses Notifikasi aktif, aplikasi sumber ada di
+                        daftar dipantau, optimisasi baterai dinonaktifkan, dan URL endpoint
+                        menggunakan HTTPS yang valid. Cek log aktivitas di aplikasi untuk kode HTTP
+                        respons.</span>
+                    <span class="en">Ensure Notification Access is granted, the source app is in the
+                        monitored list, battery optimization is disabled, and the endpoint URL is
+                        valid HTTPS. Check the in-app activity log for the response HTTP
+                        code.</span>
+                </p>
+
+                <h3><span class="id">Nominal terbaca salah / kosong?</span><span class="en">Amount
+                        parsed wrong / empty?</span></h3>
+                <p><span class="id">PayHook mengekstrak angka dari teks notifikasi (mis.
+                        <code>Rp 300.000</code>, <code>IDR 300,000</code>). Jika format bank Anda
+                        tidak dikenali, sesuaikan kata kunci di aplikasi.</span>
+                    <span class="en">PayHook extracts numbers from the notification text (e.g.
+                        <code>Rp 300.000</code>, <code>IDR 300,000</code>). If your bank's format is
+                        not recognized, adjust the keywords in the app.</span>
+                </p>
+
+                <h3><span class="id">Bagaimana menghindari data ganda?</span><span class="en">How to
+                        avoid duplicate data?</span></h3>
+                <p><span class="id">Gunakan field <code>reference</code> sebagai kunci idempoten
+                        saat menyimpan ke database. PayHook juga memiliki de-duplikasi bawaan untuk
+                        notifikasi yang sama.</span>
+                    <span class="en">Use the <code>reference</code> field as an idempotency key when
+                        saving to your database. PayHook also has built-in de-duplication for
+                        identical notifications.</span>
+                </p>
+
+                <h3><span class="id">Apakah aman untuk produksi?</span><span class="en">Is it
+                        production-safe?</span></h3>
+                <p><span class="id">PayHook cocok untuk volume kecil–menengah. Untuk keandalan
+                        tinggi, gunakan perangkat khusus yang selalu online, dan verifikasi
+                        pembayaran penting secara manual atau via mutasi rekening.</span>
+                    <span class="en">PayHook suits small–medium volume. For high reliability, use a
+                        dedicated always-online device, and verify important payments manually or
+                        via account statements.</span>
+                </p>
+            </section>
+
+        </main>
+    </div>
+
+    <footer class="footer">
+        <p>
+            <span class="id">© <span id="year"></span> PayHook — Alternatif Payment Gateway Gratis.
+                Dokumentasi ini bersifat komunitas.</span>
+            <span class="en">© <span id="yearEn"></span> PayHook — Free Payment Gateway Alternative.
+                This documentation is community-maintained.</span>
+        </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="js/nav.js"></script>
+    <script src="js/simulator.js"></script>
+</body>
+
+</html>
