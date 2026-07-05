@@ -69,6 +69,12 @@ function corsHeaders(origin, allowed) {
     };
 }
 
+function isAllowedOrigin(origin, allowed) {
+    if (allowed.length === 0) return true;
+    if (!origin) return false;
+    return allowed.includes(String(origin).toLowerCase());
+}
+
 function json(data, status, cors) {
     return new Response(JSON.stringify(data), {
         status: status,
@@ -76,12 +82,23 @@ function json(data, status, cors) {
     });
 }
 
+function parseCsv(value) {
+    return String(value || "")
+        .split(",")
+        .map((s) => s.trim().toLowerCase())
+        .filter(Boolean);
+}
+
 export default {
     async fetch(request, env) {
-        const allowed = (env && env.ALLOWED_ORIGINS ? env.ALLOWED_ORIGINS : "")
-            .split(",").map((s) => s.trim()).filter(Boolean);
-        const origin = request.headers.get("Origin") || "";
+        const allowed = parseCsv(env && env.ALLOWED_ORIGINS ? env.ALLOWED_ORIGINS : "");
+        const allowedTargets = parseCsv(env && env.ALLOWED_TARGET_HOSTS ? env.ALLOWED_TARGET_HOSTS : "");
+        const origin = (request.headers.get("Origin") || "").toLowerCase();
         const cors = corsHeaders(origin, allowed);
+
+        if (!isAllowedOrigin(origin, allowed)) {
+            return json({ ok: false, error: "Origin is not allowed" }, 403, cors);
+        }
 
         if (request.method === "OPTIONS") {
             return new Response(null, { status: 204, headers: cors });
@@ -111,6 +128,9 @@ export default {
         }
         if (isPrivateHost(parsed.hostname)) {
             return json({ ok: false, error: "Target host is not allowed (private/loopback)" }, 400, cors);
+        }
+        if (allowedTargets.length > 0 && !allowedTargets.includes(parsed.hostname.toLowerCase())) {
+            return json({ ok: false, error: "Target host is not in allowlist" }, 400, cors);
         }
 
         // Sanitize forwarded headers.

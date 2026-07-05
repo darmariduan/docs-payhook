@@ -1,8 +1,11 @@
-name = "payhook-sandbox-relay"
+name = "docs-payhook-relay"
 main = "worker.js"
 compatibility_date = "2024-11-01"
 
-# Optional: restrict which sites may call the relay.
+# Optional: restrict which sites may call the relay (browser CORS).
 # Comma-separated list of allowed Origins. Leave unset to allow any origin.
+# For public sandbox mode, do NOT set ALLOWED_TARGET_HOSTS so users can test
+# with their own webhook domains.
 # [vars]
-# ALLOWED_ORIGINS = "https://your-user.github.io"
+# ALLOWED_ORIGINS = "https://payhook.freehost.id"
+# ALLOWED_TARGET_HOSTS = ""
