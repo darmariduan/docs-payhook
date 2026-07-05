@@ -8,12 +8,14 @@
     "use strict";
 
     // ---------------------------------------------------------
-    // CONFIG: set your deployed relay endpoint here.
-    // Deploy relay/worker.js to Cloudflare Workers (or similar)
-    // and paste its URL below to enable "Send Test (Live)".
-    // Leave empty ("") to disable live send (cURL still works).
+    // CONFIG: set relay URL in index.html via
+    // window.PAYHOOK_RELAY_URL = "https://...workers.dev";
+    // Fallback to empty string means live relay is disabled.
     // ---------------------------------------------------------
-    var RELAY_URL = "";
+    var RELAY_URL =
+        typeof window.PAYHOOK_RELAY_URL === "string"
+            ? window.PAYHOOK_RELAY_URL.trim()
+            : "";
 
     // Supported sources (source name + Android package + short icon letter)
     var SOURCES = [
@@ -231,8 +233,8 @@
             renderResult({
                 success: false,
                 error: isEn
-                    ? "Live relay is not configured. Use \"Copy cURL\" instead, or set RELAY_URL in js/simulator.js after deploying relay/worker.js."
-                    : "Relay live belum dikonfigurasi. Gunakan \"Salin cURL\", atau isi RELAY_URL di js/simulator.js setelah deploy relay/worker.js."
+                    ? "Live relay is not configured. Use \"Copy cURL\" instead, or set window.PAYHOOK_RELAY_URL in index.html after deploying relay/worker.js."
+                    : "Relay live belum dikonfigurasi. Gunakan \"Salin cURL\", atau isi window.PAYHOOK_RELAY_URL di index.html setelah deploy relay/worker.js."
             });
             return;
         }

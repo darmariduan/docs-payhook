@@ -1,0 +1,8 @@
+name = "payhook-sandbox-relay"
+main = "worker.js"
+compatibility_date = "2024-11-01"
+
+# Optional: restrict which sites may call the relay.
+# Comma-separated list of allowed Origins. Leave unset to allow any origin.
+# [vars]
+# ALLOWED_ORIGINS = "https://your-user.github.io"

@@ -45,7 +45,7 @@
                 <button data-lang-btn="id" class="active">ID</button>
                 <button data-lang-btn="en">EN</button>
             </div>
-            <a class="gh-link" href="https://github.com/darmariduan" target="_blank" rel="noopener">
+            <a class="gh-link" href="https://github.com/" target="_blank" rel="noopener">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                     <path
                         d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.4-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2.9-.3 1.9-.4 2.9-.4s2 .1 2.9.4c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.7.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z" />
@@ -125,8 +125,7 @@
                 <h2><span class="id">Tentang PayHook</span><span class="en">About PayHook</span>
                 </h2>
                 <p>
-                    <span class="id"><strong>PayHook</strong>(PAYment webHOOK) adalah aplikasi
-                        Android yang membaca
+                    <span class="id"><strong>PayHook</strong> adalah aplikasi Android yang membaca
                         notifikasi pembayaran masuk dari aplikasi e-wallet dan mobile banking, lalu
                         mengirimkannya sebagai webhook JSON ke endpoint server yang Anda tentukan.
                         Cocok untuk UMKM, toko online, aplikasi SaaS, dan sistem pencatatan keuangan
@@ -899,8 +898,8 @@ if __name__ == "__main__":
 
                         <hr style="border:none;border-top:1px solid var(--border);margin:20px 0;" />
 
-                        <label for="simUrl"><span class="id">URL Webhook Anda</span><span
-                                class="en">Your Webhook URL</span></label>
+                        <label for="simUrl"><span class="id">URL Webhook Anda / Endpoint</span><span
+                                class="en">Your Webhook URL / Endpoint</span></label>
                         <input type="url" id="simUrl" placeholder="https://webhook.site/xxxx" />
 
                         <label for="simAuthType"><span class="id">Tipe Auth</span><span
@@ -968,14 +967,13 @@ if __name__ == "__main__":
                 <div class="callout" style="margin-top:24px;">
                     <strong class="id">Tentang mode &ldquo;Kirim Test (Live)&rdquo;</strong><strong
                         class="en">About &ldquo;Send Test (Live)&rdquo; mode</strong>
-                    <span class="id">Karena PayHook berjalan lokal tanpa server, pengiriman langsung
-                        dari browser diteruskan lewat relay serverless opsional (untuk mengatasi
-                        CORS). Jika relay belum dikonfigurasi, gunakan tombol <em>Salin cURL</em>
-                        lalu jalankan di terminal Anda.</span>
-                    <span class="en">Because PayHook runs locally with no server, live sends from
-                        the browser are forwarded through an optional serverless relay (to work
-                        around CORS). If the relay is not configured, use the <em>Copy cURL</em>
-                        button and run it in your terminal.</span>
+                    <span class="id">Simulator akan mencoba kirim langsung dari browser terlebih
+                        dulu. Jika endpoint Anda memblokir CORS, gunakan relay serverless (isi
+                        <code>PAYHOOK_RELAY_URL</code> di bawah) atau tombol <em>Salin
+                            cURL</em>.</span>
+                    <span class="en">The simulator first tries direct browser delivery. If your
+                        endpoint blocks CORS, use the serverless relay (set
+                        <code>PAYHOOK_RELAY_URL</code> below) or use <em>Copy cURL</em>.</span>
                 </div>
             </section>
 
@@ -1039,6 +1037,9 @@ if __name__ == "__main__":
         </p>
     </footer>
 
+    <script>
+        window.PAYHOOK_RELAY_URL = "";
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="js/nav.js"></script>
