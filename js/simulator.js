@@ -222,7 +222,7 @@
         var url = elUrl.value.trim();
         var isEn = lang() === "en";
         if (!url) {
-            renderResult({ success: false, error: isEn ? "Please enter your webhook URL." : "Masukkan URL webhook Anda dulu." });
+            renderResult({ success: false, error: isEn ? "Please enter webhook URL/ Endpoint." : "Masukkan URL Webhook/ Endpoint." });
             return;
         }
         if (!/^https?:\/\//i.test(url)) {
