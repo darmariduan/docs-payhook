@@ -380,6 +380,30 @@ section.doc+section.doc {
     font-weight: 600;
 }
 
+.hero-actions {
+    margin-top: 16px;
+}
+
+.store-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: #ffffff;
+    color: var(--primary-dark);
+    border: 1px solid rgba(255, 255, 255, .8);
+    font-size: .9rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 6px 18px rgba(8, 84, 99, .2);
+}
+
+.store-btn:hover {
+    text-decoration: none;
+    filter: brightness(.97);
+}
+
 /* Cards */
 .card {
     background: var(--surface);
@@ -985,6 +1009,10 @@ li code {
 
     .hero {
         padding: 26px 20px;
+    }
+
+    .store-btn {
+        width: 100%;
     }
 
     .content {
