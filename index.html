@@ -837,7 +837,8 @@ X-Payhook-Signature: sha256=&lt;hmac&gt;   # jika HMAC diaktifkan / if HMAC enab
                                 <td><code>X-Payhook-Signature</code></td>
                                 <td><code>sha256=&lt;hex&gt;</code> — HMAC-SHA256 <span
                                         class="id">dari</span><span class="en">of</span>
-                                    <code>"{timestamp}.{raw_body}"</code></td>
+                                    <code>"{timestamp}.{raw_body}"</code>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -1073,11 +1074,16 @@ if ($auth !== 'Bearer ' . $expected) {
 $payload = json_decode(file_get_contents('php://input'), true);
 if (!$payload) { http_response_code(400); exit; }
 
+// Idempotent upsert by event_id
+$eventId = $payload['event_id'] ?? '';
+if ($eventId === '') { http_response_code(422); exit(json_encode(['error' =&gt; 'Missing event_id'])); }
+
 // Simpan pembayaran
 file_put_contents('payments.log',
-    sprintf("[%s] %s Rp%s ref=%s\n",
+    sprintf("[%s] %s Rp%s event_id=%s ref=%s\n",
         $payload['timestamp'], $payload['source'],
         number_format($payload['amount'], 0, ',', '.'),
+        $eventId,
         $payload['reference']
     ), FILE_APPEND);
 
@@ -1095,6 +1101,7 @@ Route::post('/payhook', function (Illuminate\Http\Request $request) {
     }
 
     $data = $request->validate([
+        'event_id'  =&gt; 'required|string',
         'amount'    =&gt; 'required|integer',
         'source'    =&gt; 'required|string',
         'reference' =&gt; 'required|string',
@@ -1102,8 +1109,8 @@ Route::post('/payhook', function (Illuminate\Http\Request $request) {
     ]);
 
     Payment::updateOrCreate(
-        ['reference' =&gt; $data['reference']], // idempoten
-        ['amount' =&gt; $data['amount'], 'source' =&gt; $data['source']]
+        ['event_id' =&gt; $data['event_id']], // idempoten
+        ['amount' =&gt; $data['amount'], 'source' =&gt; $data['source'], 'reference' =&gt; $data['reference']]
     );
 
     return response()->json(['status' =&gt; 'ok']);
@@ -1125,10 +1132,10 @@ app.post('/payhook', (req, res) =&gt; {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  const { amount, source, reference, timestamp } = req.body;
-  console.log(`[${timestamp}] ${source} Rp${amount} ref=${reference}`);
+    const { event_id, amount, source, reference, timestamp } = req.body;
+    console.log(`[${timestamp}] ${source} Rp${amount} event_id=${event_id} ref=${reference}`);
 
-  // TODO: simpan ke database (idempoten berdasarkan reference)
+    // TODO: simpan ke database (idempoten berdasarkan event_id)
   res.json({ status: 'ok' });
 });
 
@@ -1150,11 +1157,12 @@ def payhook():
     if request.headers.get("Authorization") != f"Bearer {TOKEN}":
         return jsonify(error="Unauthorized"), 401
 
-    data = request.get_json(silent=True) or {}
+        data = request.get_json(silent=True) or {}
     print(f"[{data.get('timestamp')}] {data.get('source')} "
-          f"Rp{data.get('amount')} ref={data.get('reference')}")
+            f"Rp{data.get('amount')} event_id={data.get('event_id')} "
+            f"ref={data.get('reference')}")
 
-    # TODO: simpan ke DB (idempoten berdasarkan reference)
+    # TODO: simpan ke DB (idempoten berdasarkan event_id)
     return jsonify(status="ok")
 
 if __name__ == "__main__":
@@ -1169,37 +1177,80 @@ if __name__ == "__main__":
                 <h2><span class="id">Simulator / Sandbox</span><span class="en">Simulator /
                         Sandbox</span></h2>
                 <p class="lead">
-                    <span class="id">Susun payload PayHook, salin sebagai cURL/kode, atau kirim uji
-                        coba langsung ke endpoint Anda — tanpa perlu transaksi sungguhan.</span>
-                    <span class="en">Build a PayHook payload, copy it as cURL/code, or send a live
-                        test to your endpoint — without any real transaction.</span>
+                    <span class="id">Susun payload PayHook (payment/heartbeat), salin sebagai
+                        cURL/kode, atau kirim uji coba langsung ke endpoint Anda — tanpa perlu
+                        transaksi sungguhan.</span>
+                    <span class="en">Build PayHook payloads (payment/heartbeat), copy them as
+                        cURL/code, or send a live test to your endpoint — without any real
+                        transaction.</span>
                 </p>
 
                 <div class="sim-grid">
                     <!-- FORM -->
                     <div class="card sim-form">
-                        <label for="simSource"><span class="id">Sumber Pembayaran</span><span
-                                class="en">Payment Source</span></label>
-                        <select id="simSource"></select>
+                        <label for="simEventType"><span class="id">Jenis Payload</span><span
+                                class="en">Payload Type</span></label>
+                        <select id="simEventType">
+                            <option value="payment">payment.incoming</option>
+                            <option value="heartbeat">heartbeat</option>
+                        </select>
 
-                        <label for="simAmount"><span class="id">Nominal (Rp)</span><span
-                                class="en">Amount (Rp)</span></label>
-                        <input type="number" id="simAmount" value="300000" min="1" />
+                        <div id="paymentOptions">
+                            <label for="simSource"><span class="id">Sumber Pembayaran</span><span
+                                    class="en">Payment Source</span></label>
+                            <select id="simSource"></select>
 
-                        <label for="simSender"><span class="id">Nama Pengirim</span><span
-                                class="en">Sender Name</span></label>
-                        <input type="text" id="simSender" value="John" />
+                            <label for="simAmount"><span class="id">Nominal (Rp)</span><span
+                                    class="en">Amount (Rp)</span></label>
+                            <input type="number" id="simAmount" value="300000" min="1" />
 
-                        <label for="simTitle"><span class="id">Judul Notifikasi</span><span
-                                class="en">Notification Title</span></label>
-                        <input type="text" id="simTitle" />
+                            <label for="simSender"><span class="id">Nama Pengirim</span><span
+                                    class="en">Sender Name</span></label>
+                            <input type="text" id="simSender" value="John" />
 
-                        <label for="simText"><span class="id">Teks Notifikasi</span><span
-                                class="en">Notification Text</span></label>
-                        <textarea id="simText"></textarea>
-                        <div class="hint"><span class="id">Otomatis terisi sesuai sumber &amp;
-                                nominal. Bisa Anda ubah.</span><span class="en">Auto-filled from
-                                source &amp; amount. You can edit it.</span></div>
+                            <label for="simTitle"><span class="id">Judul Notifikasi</span><span
+                                    class="en">Notification Title</span></label>
+                            <input type="text" id="simTitle" />
+
+                            <label for="simText"><span class="id">Teks Notifikasi</span><span
+                                    class="en">Notification Text</span></label>
+                            <textarea id="simText"></textarea>
+                            <div class="hint"><span class="id">Otomatis terisi sesuai sumber &amp;
+                                    nominal. Bisa Anda ubah.</span><span class="en">Auto-filled from
+                                    source &amp; amount. You can edit it.</span></div>
+                        </div>
+
+                        <div id="heartbeatOptions" style="display:none;">
+                            <label for="simHeartbeatConnected"><span class="id">Listener
+                                    Connected</span><span class="en">Listener
+                                    Connected</span></label>
+                            <select id="simHeartbeatConnected">
+                                <option value="true" selected>true</option>
+                                <option value="false">false</option>
+                            </select>
+
+                            <label for="simHeartbeatBattery"><span class="id">Battery
+                                    Optimized</span><span class="en">Battery
+                                    Optimized</span></label>
+                            <select id="simHeartbeatBattery">
+                                <option value="false" selected>false</option>
+                                <option value="true">true</option>
+                            </select>
+
+                            <label for="simHeartbeatLastEventSec"><span class="id">Last Event Ago
+                                    (detik)</span><span class="en">Last Event Ago
+                                    (seconds)</span></label>
+                            <input type="number" id="simHeartbeatLastEventSec" value="120"
+                                min="0" />
+                        </div>
+
+                        <label for="simPreviewMode"><span class="id">Mode Preview</span><span
+                                class="en">Preview Mode</span></label>
+                        <select id="simPreviewMode">
+                            <option value="auto">Auto</option>
+                            <option value="notif">Notification</option>
+                            <option value="status">Heartbeat Status</option>
+                        </select>
 
                         <hr style="border:none;border-top:1px solid var(--border);margin:20px 0;" />
 
@@ -1227,6 +1278,16 @@ if __name__ == "__main__":
                             <input type="text" id="simToken" placeholder="YOUR_SECRET_TOKEN" />
                         </div>
 
+                        <label for="simSecret"><span class="id">Secret Key (HMAC,
+                                Opsional)</span><span class="en">Secret Key (HMAC,
+                                Optional)</span></label>
+                        <input type="text" id="simSecret" placeholder="YOUR_HMAC_SECRET" />
+                        <div class="hint"><span class="id">Jika diisi, simulator menambahkan header
+                                X-Payhook-Timestamp, X-Payhook-Nonce, dan
+                                X-Payhook-Signature.</span><span class="en">If set, simulator adds
+                                X-Payhook-Timestamp,
+                                X-Payhook-Nonce, and X-Payhook-Signature headers.</span></div>
+
                         <div class="btn-row">
                             <button class="btn btn-secondary" id="btnGenerate"><span class="id">Buat
                                     Payload</span><span class="en">Generate Payload</span></button>
@@ -1240,7 +1301,7 @@ if __name__ == "__main__":
                     <!-- OUTPUT -->
                     <div class="sim-output">
                         <div class="phone">
-                            <div class="notif">
+                            <div class="notif" id="previewNotif">
                                 <div class="app-ico" id="previewIco">B</div>
                                 <div>
                                     <div class="n-title" id="previewTitle">Uang masuk dari John
@@ -1248,6 +1309,24 @@ if __name__ == "__main__":
                                     <div class="n-text" id="previewText">Rp 300.000,00 sudah masuk
                                         ke rekening Anda</div>
                                     <div class="n-app" id="previewApp">BCA Mobile</div>
+                                </div>
+                            </div>
+                            <div class="heartbeat-card" id="heartbeatPreview" style="display:none;">
+                                <div class="heartbeat-head">PayHook Heartbeat</div>
+                                <div class="heartbeat-row"><span class="id">Listener</span><span
+                                        class="en">Listener</span>
+                                    <strong id="previewHbConnected">true</strong>
+                                </div>
+                                <div class="heartbeat-row"><span>Battery Optimized</span>
+                                    <strong id="previewHbBattery">false</strong>
+                                </div>
+                                <div class="heartbeat-row"><span class="id">Last Event</span><span
+                                        class="en">Last Event</span>
+                                    <strong id="previewHbLastEvent">120s ago</strong>
+                                </div>
+                                <div class="heartbeat-row"><span class="id">Status</span><span
+                                        class="en">Status</span>
+                                    <strong id="previewHbStatus">ONLINE</strong>
                                 </div>
                             </div>
                         </div>
@@ -1311,12 +1390,12 @@ if __name__ == "__main__":
 
                 <h3><span class="id">Bagaimana menghindari data ganda?</span><span class="en">How to
                         avoid duplicate data?</span></h3>
-                <p><span class="id">Gunakan field <code>reference</code> sebagai kunci idempoten
-                        saat menyimpan ke database. PayHook juga memiliki de-duplikasi bawaan untuk
-                        notifikasi yang sama.</span>
-                    <span class="en">Use the <code>reference</code> field as an idempotency key when
-                        saving to your database. PayHook also has built-in de-duplication for
-                        identical notifications.</span>
+                <p><span class="id">Gunakan field <code>event_id</code> sebagai kunci idempoten
+                        saat menyimpan ke database. Nilai ini tetap sama saat retry, sehingga aman
+                        untuk mekanisme upsert dan mencegah transaksi ganda.</span>
+                    <span class="en">Use the <code>event_id</code> field as your idempotency key
+                        when saving to the database. It stays stable across retries, making upsert
+                        safe and preventing duplicates.</span>
                 </p>
 
                 <h3><span class="id">Apakah aman untuk produksi?</span><span class="en">Is it

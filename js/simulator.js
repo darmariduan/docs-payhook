@@ -39,18 +39,28 @@
 
     // ---- Elements ----
     var elSource = $("simSource");
+    var elEventType = $("simEventType");
+    var elPaymentOptions = $("paymentOptions");
+    var elHeartbeatOptions = $("heartbeatOptions");
     var elAmount = $("simAmount");
     var elSender = $("simSender");
     var elTitle = $("simTitle");
     var elText = $("simText");
+    var elHeartbeatConnected = $("simHeartbeatConnected");
+    var elHeartbeatBattery = $("simHeartbeatBattery");
+    var elHeartbeatLastEventSec = $("simHeartbeatLastEventSec");
+    var elPreviewMode = $("simPreviewMode");
     var elUrl = $("simUrl");
     var elAuthType = $("simAuthType");
     var elHeaderWrap = $("headerNameWrap");
     var elHeaderName = $("simHeaderName");
     var elTokenWrap = $("tokenWrap");
     var elToken = $("simToken");
+    var elSecret = $("simSecret");
     var elJsonOut = $("jsonOut");
     var elResult = $("resultArea");
+    var elPreviewNotif = $("previewNotif");
+    var elHeartbeatPreview = $("heartbeatPreview");
 
     if (!elSource) return; // simulator not on page
 
@@ -75,16 +85,41 @@
         return "Rp " + Number(n || 0).toLocaleString("id-ID") + ",00";
     }
 
+    function isHeartbeatMode() {
+        return !!elEventType && elEventType.value === "heartbeat";
+    }
+
+    function resolvePreviewMode() {
+        var selected = elPreviewMode && elPreviewMode.value ? elPreviewMode.value : "auto";
+        if (selected === "notif" || selected === "status") return selected;
+        return isHeartbeatMode() ? "status" : "notif";
+    }
+
+    function refreshPreviewModeUI() {
+        var mode = resolvePreviewMode();
+        if (elPreviewNotif) elPreviewNotif.style.display = mode === "notif" ? "flex" : "none";
+        if (elHeartbeatPreview) elHeartbeatPreview.style.display = mode === "status" ? "block" : "none";
+    }
+
+    function refreshModeUI() {
+        var heartbeat = isHeartbeatMode();
+        if (elPaymentOptions) elPaymentOptions.style.display = heartbeat ? "none" : "";
+        if (elHeartbeatOptions) elHeartbeatOptions.style.display = heartbeat ? "" : "none";
+        refreshPreviewModeUI();
+    }
+
     // ---- Auto-fill title/text + phone preview ----
     var titleEdited = false, textEdited = false;
     elTitle.addEventListener("input", function () { titleEdited = true; });
     elText.addEventListener("input", function () { textEdited = true; });
 
     function defaultTitle() {
+        if (isHeartbeatMode()) return "PayHook heartbeat";
         var name = (elSender.value || "").trim();
         return name ? "Uang masuk dari " + name : "Uang masuk";
     }
     function defaultText() {
+        if (isHeartbeatMode()) return "Perangkat PayHook online";
         return formatRupiah(elAmount.value) + " sudah masuk ke rekening Anda";
     }
 
@@ -96,16 +131,40 @@
 
     function updatePreview() {
         var src = currentSource();
-        $("previewIco").textContent = src.ico;
+        $("previewIco").textContent = isHeartbeatMode() ? "P" : src.ico;
         $("previewTitle").textContent = elTitle.value;
         $("previewText").textContent = elText.value;
-        $("previewApp").textContent = src.name;
+        $("previewApp").textContent = isHeartbeatMode() ? "PayHook System" : src.name;
+        updateHeartbeatPreview();
+        refreshPreviewModeUI();
+    }
+
+    function updateHeartbeatPreview() {
+        var connected = (elHeartbeatConnected && elHeartbeatConnected.value) !== "false";
+        var battery = (elHeartbeatBattery && elHeartbeatBattery.value) === "true";
+        var lastEventSec = parseInt(elHeartbeatLastEventSec && elHeartbeatLastEventSec.value, 10);
+        if (!Number.isFinite(lastEventSec) || lastEventSec < 0) lastEventSec = 120;
+
+        $("previewHbConnected").textContent = connected ? "true" : "false";
+        $("previewHbBattery").textContent = battery ? "true" : "false";
+        $("previewHbLastEvent").textContent = lastEventSec + "s ago";
+        $("previewHbStatus").textContent = connected ? "ONLINE" : "OFFLINE";
     }
 
     ["change", "input"].forEach(function (ev) {
+        if (elEventType) elEventType.addEventListener(ev, function () {
+            titleEdited = false;
+            textEdited = false;
+            refreshModeUI();
+            refreshTemplates(true);
+        });
+        if (elPreviewMode) elPreviewMode.addEventListener(ev, refreshPreviewModeUI);
         elSource.addEventListener(ev, function () { refreshTemplates(false); });
         elAmount.addEventListener(ev, function () { if (!textEdited) elText.value = defaultText(); updatePreview(); });
         elSender.addEventListener(ev, function () { if (!titleEdited) elTitle.value = defaultTitle(); updatePreview(); });
+        if (elHeartbeatConnected) elHeartbeatConnected.addEventListener(ev, updatePreview);
+        if (elHeartbeatBattery) elHeartbeatBattery.addEventListener(ev, updatePreview);
+        if (elHeartbeatLastEventSec) elHeartbeatLastEventSec.addEventListener(ev, updatePreview);
     });
     elTitle.addEventListener("input", updatePreview);
     elText.addEventListener("input", updatePreview);
@@ -126,9 +185,8 @@
             " " + pad(d.getHours()) + ":" + pad(d.getMinutes()) + ":" + pad(d.getSeconds());
     }
 
-    function buildPayload() {
+    function buildPaymentPayload(ms) {
         var src = currentSource();
-        var ms = Date.now();
         var rand = Math.random().toString(16).slice(2, 8);
         return {
             event_id: "evt_" + ms + "_" + rand,
@@ -142,6 +200,26 @@
             notification_text: elText.value,
             sent_by: "PayHook"
         };
+    }
+
+    function buildHeartbeatPayload(ms) {
+        var rand = Math.random().toString(16).slice(2, 14);
+        var lastEventSec = parseInt(elHeartbeatLastEventSec && elHeartbeatLastEventSec.value, 10);
+        if (!Number.isFinite(lastEventSec) || lastEventSec < 0) lastEventSec = 120;
+        return {
+            type: "heartbeat",
+            device_id: "ph-" + rand,
+            app_version: "1.5.0",
+            listener_connected: (elHeartbeatConnected && elHeartbeatConnected.value) !== "false",
+            battery_optimized: (elHeartbeatBattery && elHeartbeatBattery.value) === "true",
+            last_event_at: ms - (lastEventSec * 1000),
+            sent_at: ms
+        };
+    }
+
+    function buildPayload() {
+        var ms = Date.now();
+        return isHeartbeatMode() ? buildHeartbeatPayload(ms) : buildPaymentPayload(ms);
     }
 
     function authHeaders() {
@@ -158,8 +236,62 @@
         return Object.assign({
             "Content-Type": "application/json",
             "Accept": "application/json",
-            "User-Agent": "PayHook-Android/1.0"
+            "User-Agent": "PayHook-Android/2.0"
         }, authHeaders());
+    }
+
+    function randomHex(bytesLen) {
+        var arr = new Uint8Array(bytesLen);
+        window.crypto.getRandomValues(arr);
+        return Array.prototype.map.call(arr, function (b) {
+            return b.toString(16).padStart(2, "0");
+        }).join("");
+    }
+
+    function toHex(buffer) {
+        return Array.prototype.map.call(new Uint8Array(buffer), function (b) {
+            return b.toString(16).padStart(2, "0");
+        }).join("");
+    }
+
+    async function hmacSha256Hex(secret, message) {
+        var enc = new TextEncoder();
+        var key = await window.crypto.subtle.importKey(
+            "raw",
+            enc.encode(secret),
+            { name: "HMAC", hash: "SHA-256" },
+            false,
+            ["sign"]
+        );
+        var sig = await window.crypto.subtle.sign("HMAC", key, enc.encode(message));
+        return toHex(sig);
+    }
+
+    async function buildRequestContext() {
+        var payload = buildPayload();
+        var raw = JSON.stringify(payload);
+        var headers = baseHeaders();
+        var secret = elSecret && elSecret.value ? elSecret.value.trim() : "";
+
+        if (secret) {
+            if (!(window.crypto && window.crypto.subtle && window.TextEncoder)) {
+                throw new Error("Web Crypto API tidak tersedia untuk membuat signature HMAC.");
+            }
+            var ts = String(Math.floor(Date.now() / 1000));
+            headers["X-Payhook-Timestamp"] = ts;
+            headers["X-Payhook-Nonce"] = randomHex(8);
+            headers["X-Payhook-Signature"] = "sha256=" + await hmacSha256Hex(secret, ts + "." + raw);
+        }
+
+        return {
+            payload: payload,
+            raw: raw,
+            headers: headers
+        };
+    }
+
+    function shellQuoteSingle(s) {
+        return "'" + String(s).replace(/'/g, "'\"'\"'") + "'";
     }
 
     // ---- Generate payload ----
@@ -168,23 +300,25 @@
     });
 
     // ---- Copy cURL ----
-    $("btnCurl").addEventListener("click", function () {
-        var url = elUrl.value.trim() || "https://your-endpoint.example/webhook";
-        var headers = baseHeaders();
-        var payload = buildPayload();
-        var lines = ["curl -X POST '" + url + "' \\"];
-        Object.keys(headers).forEach(function (k) {
-            lines.push("  -H '" + k + ": " + headers[k] + "' \\");
-        });
-        lines.push("  -d '" + JSON.stringify(payload) + "'");
-        var cmd = lines.join("\n");
-        navigator.clipboard.writeText(cmd).then(function () {
+    $("btnCurl").addEventListener("click", async function () {
+        try {
+            var url = elUrl.value.trim() || "https://your-endpoint.example/webhook";
+            var ctx = await buildRequestContext();
+            var lines = ["curl -X POST " + shellQuoteSingle(url) + " \\"];
+            Object.keys(ctx.headers).forEach(function (k) {
+                lines.push("  -H " + shellQuoteSingle(k + ": " + ctx.headers[k]) + " \\");
+            });
+            lines.push("  -d " + shellQuoteSingle(ctx.raw));
+            var cmd = lines.join("\n");
+            await navigator.clipboard.writeText(cmd);
             elJsonOut.textContent = cmd;
             var btn = $("btnCurl");
             var prev = btn.innerHTML;
             btn.textContent = lang() === "en" ? "cURL copied!" : "cURL tersalin!";
             setTimeout(function () { btn.innerHTML = prev; }, 1500);
-        });
+        } catch (err) {
+            renderResult({ success: false, error: String(err && err.message || err) });
+        }
     });
 
     // ---- Result rendering ----
@@ -221,7 +355,7 @@
     }
 
     // ---- Send live test (via relay) ----
-    $("btnSend").addEventListener("click", function () {
+    $("btnSend").addEventListener("click", async function () {
         var url = elUrl.value.trim();
         var isEn = lang() === "en";
         if (!url) {
@@ -244,13 +378,22 @@
 
         renderResult({ loading: true });
         var started = Date.now();
+        var ctx;
+        try {
+            ctx = await buildRequestContext();
+        } catch (err) {
+            renderResult({ success: false, error: String(err && err.message || err) });
+            return;
+        }
+
         fetch(RELAY_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 url: url,
-                headers: baseHeaders(),
-                body: buildPayload()
+                headers: ctx.headers,
+                body: ctx.payload,
+                raw_body: ctx.raw
             })
         })
             .then(function (res) { return res.json(); })
@@ -276,5 +419,7 @@
 
     // ---- Init ----
     refreshAuthUI();
+    refreshModeUI();
     refreshTemplates(true);
+    refreshPreviewModeUI();
 })();

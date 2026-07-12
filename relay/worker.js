@@ -13,7 +13,7 @@
  *      in index.html
  *
  * Request  (POST, JSON):
- *   { "url": "...", "headers": { ... }, "body": { ... } }
+ *   { "url": "...", "headers": { ... }, "body": { ... }, "raw_body": "..." }
  * Response (JSON):
  *   { "ok": bool, "status": int, "body": "string", "error": "string" }
  *
@@ -143,7 +143,9 @@ export default {
             }
         }
 
-        const bodyStr = JSON.stringify(input.body != null ? input.body : {});
+        const bodyStr = typeof input.raw_body === "string"
+            ? input.raw_body
+            : JSON.stringify(input.body != null ? input.body : {});
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
