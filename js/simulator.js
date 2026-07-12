@@ -129,7 +129,10 @@
     function buildPayload() {
         var src = currentSource();
         var ms = Date.now();
+        var rand = Math.random().toString(16).slice(2, 8);
         return {
+            event_id: "evt_" + ms + "_" + rand,
+            event_type: "payment.incoming",
             amount: parseInt(elAmount.value, 10) || 0,
             source: src.name,
             reference: "PH-" + ms,

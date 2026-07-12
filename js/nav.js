@@ -64,9 +64,8 @@
         sections.forEach(function (s) { observer.observe(s.el); });
     }
 
-    /* ---------- Integration tabs ---------- */
-    var tabWrap = document.getElementById("integrationTabs");
-    if (tabWrap) {
+    /* ---------- Tabs (works for every .tabs container) ---------- */
+    document.querySelectorAll(".tabs").forEach(function (tabWrap) {
         var buttons = tabWrap.querySelectorAll(".tab-bar button");
         var panels = tabWrap.querySelectorAll(".tab-panel");
         buttons.forEach(function (btn) {
@@ -78,7 +77,7 @@
                 });
             });
         });
-    }
+    });
 
     /* ---------- Copy buttons ---------- */
     function flash(btn) {

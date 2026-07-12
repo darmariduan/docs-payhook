@@ -84,6 +84,10 @@
                     class="en">Payload Format</span></a>
             <a href="#autentikasi" class="nav-link"><span class="id">Autentikasi &amp;
                     Verifikasi</span><span class="en">Auth &amp; Verification</span></a>
+            <a href="#signature" class="nav-link"><span class="id">Signature (HMAC)</span><span
+                    class="en">Signature (HMAC)</span></a>
+            <a href="#heartbeat" class="nav-link"><span class="id">Heartbeat Monitoring</span><span
+                    class="en">Heartbeat Monitoring</span></a>
             <a href="#integrasi" class="nav-link"><span class="id">Contoh Integrasi</span><span
                     class="en">Integration Examples</span></a>
 
@@ -413,6 +417,17 @@
                                         token generator is built into the app.</span></td>
                             </tr>
                             <tr>
+                                <td><code>secretKey</code></td>
+                                <td><span class="id">Opsional. Jika diisi, aktifkan tanda tangan
+                                        <strong>HMAC-SHA256</strong> (header
+                                        <code>X-Payhook-Signature</code>).
+                                        Lihat bagian Signature.</span><span class="en">Optional. If
+                                        set, enables
+                                        <strong>HMAC-SHA256</strong> signing
+                                        (<code>X-Payhook-Signature</code>
+                                        header). See the Signature section.</span></td>
+                            </tr>
+                            <tr>
                                 <td><code>isEnabled</code></td>
                                 <td><span class="id">Aktif / nonaktif tanpa menghapus.</span><span
                                         class="en">Enable / disable without deleting.</span></td>
@@ -594,13 +609,18 @@
                     <pre><code>POST /your-endpoint HTTP/1.1
 Content-Type: application/json
 Accept: application/json
-User-Agent: PayHook-Android/1.0
-Authorization: Bearer &lt;token&gt;      # tergantung tipe auth / depends on auth type</code></pre>
+User-Agent: PayHook-Android/2.0
+Authorization: Bearer &lt;token&gt;          # tergantung tipe auth / depends on auth type
+X-Payhook-Timestamp: 1752300000         # jika HMAC diaktifkan / if HMAC enabled
+X-Payhook-Nonce: 9f2c...                 # jika HMAC diaktifkan / if HMAC enabled
+X-Payhook-Signature: sha256=&lt;hmac&gt;   # jika HMAC diaktifkan / if HMAC enabled</code></pre>
                 </div>
 
                 <h3>Body (JSON)</h3>
                 <div class="code-block">
                     <pre><code>{
+  "event_id": "evt_1752300000000_a1b2c3",
+  "event_type": "payment.incoming",
   "amount": 300000,
   "source": "BCA Mobile",
   "reference": "PH-1711425600000",
@@ -623,6 +643,23 @@ Authorization: Bearer &lt;token&gt;      # tergantung tipe auth / depends on aut
                             </tr>
                         </thead>
                         <tbody>
+                            <tr>
+                                <td><code>event_id</code></td>
+                                <td>string</td>
+                                <td><span class="id">ID unik & stabil per event. Pakai sebagai
+                                        <strong>idempotency key</strong> (upsert) agar transaksi
+                                        tidak dobel walau webhook dikirim ulang.</span><span
+                                        class="en">Unique & stable per event. Use it as an
+                                        <strong>idempotency key</strong> (upsert) so retries never
+                                        create duplicates.</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>event_type</code></td>
+                                <td>string</td>
+                                <td><span class="id">Jenis event, mis.
+                                        <code>payment.incoming</code>.</span><span class="en">Event
+                                        type, e.g. <code>payment.incoming</code>.</span></td>
+                            </tr>
                             <tr>
                                 <td><code>amount</code></td>
                                 <td>number (long)</td>
@@ -751,6 +788,254 @@ Authorization: Bearer &lt;token&gt;      # tergantung tipe auth / depends on aut
                     <span class="en">Always validate the auth header on every incoming request and
                         reject mismatched tokens. Use HTTPS and never put the token in the
                         URL.</span>
+                </div>
+            </section>
+
+            <!-- ============ SIGNATURE (HMAC) ============ -->
+            <section class="doc" id="signature">
+                <h2><span class="id">Signature (HMAC)</span><span class="en">Signature (HMAC)</span>
+                </h2>
+                <p>
+                    <span class="id">Untuk keamanan tingkat produksi, isi <strong>Secret
+                            Key</strong>
+                        pada webhook di aplikasi PayHook. Jika diisi, PayHook menandatangani setiap
+                        request dengan <strong>HMAC-SHA256</strong> sehingga server Anda bisa
+                        memastikan request benar-benar dari PayHook (anti-spoofing) dan bukan
+                        kiriman
+                        ulang lama (anti-replay).</span>
+                    <span class="en">For production-grade security, set a <strong>Secret
+                            Key</strong>
+                        on the webhook in the PayHook app. When set, PayHook signs every request
+                        with
+                        <strong>HMAC-SHA256</strong> so your server can verify the request truly
+                        comes
+                        from PayHook (anti-spoofing) and is not an old replay (anti-replay).</span>
+                </p>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Header</th>
+                                <th><span class="id">Keterangan</span><span
+                                        class="en">Description</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>X-Payhook-Timestamp</code></td>
+                                <td><span class="id">Epoch detik saat request dibuat.</span><span
+                                        class="en">Epoch seconds when the request was
+                                        created.</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>X-Payhook-Nonce</code></td>
+                                <td><span class="id">Nilai acak sekali pakai.</span><span
+                                        class="en">Single-use random value.</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>X-Payhook-Signature</code></td>
+                                <td><code>sha256=&lt;hex&gt;</code> — HMAC-SHA256 <span
+                                        class="id">dari</span><span class="en">of</span>
+                                    <code>"{timestamp}.{raw_body}"</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout">
+                    <span class="id">Nilai yang ditandatangani adalah
+                        <code>"{timestamp}.{body_json_mentah}"</code>.
+                        Verifikasi memakai <em>raw body</em> (sebelum di-parse) agar hash sama
+                        persis.</span>
+                    <span class="en">The signed value is <code>"{timestamp}.{raw_json_body}"</code>.
+                        Verify using the <em>raw body</em> (before parsing) so the hash matches
+                        exactly.</span>
+                </div>
+
+                <h3><span class="id">Contoh Verifikasi</span><span class="en">Verification
+                        Example</span></h3>
+                <div class="tabs" id="sigTabs">
+                    <div class="tab-bar">
+                        <button class="active" data-tab="sig-php">PHP</button>
+                        <button data-tab="sig-node">Node.js</button>
+                    </div>
+                    <div class="tab-panel active" data-panel="sig-php">
+                        <div class="code-block">
+                            <pre><code>&lt;?php
+$secret = 'YOUR_SECRET_KEY';
+$raw = file_get_contents('php://input');
+$ts  = $_SERVER['HTTP_X_PAYHOOK_TIMESTAMP'] ?? '';
+$sig = $_SERVER['HTTP_X_PAYHOOK_SIGNATURE'] ?? '';
+
+// Tolak jika timestamp terlalu lama (anti-replay), mis. &gt; 5 menit
+if (abs(time() - (int)$ts) &gt; 300) { http_response_code(408); exit; }
+
+$expected = 'sha256=' . hash_hmac('sha256', $ts . '.' . $raw, $secret);
+if (!hash_equals($expected, $sig)) { http_response_code(401); exit; }
+
+$data = json_decode($raw, true);
+// upsert berdasarkan $data['event_id'] (idempoten)
+http_response_code(200);</code></pre>
+                        </div>
+                    </div>
+                    <div class="tab-panel" data-panel="sig-node">
+                        <div class="code-block">
+                            <pre><code>const crypto = require('crypto');
+// Pakai raw body: app.use(express.raw({ type: 'application/json' }))
+app.post('/payhook', (req, res) =&gt; {
+  const secret = process.env.PAYHOOK_SECRET;
+  const ts  = req.header('X-Payhook-Timestamp') || '';
+  const sig = req.header('X-Payhook-Signature') || '';
+  const raw = req.body.toString('utf8');
+
+  if (Math.abs(Date.now() / 1000 - Number(ts)) &gt; 300)
+    return res.sendStatus(408); // anti-replay
+
+  const expected = 'sha256=' +
+    crypto.createHmac('sha256', secret).update(ts + '.' + raw).digest('hex');
+  const ok = sig.length === expected.length &amp;&amp;
+    crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected));
+  if (!ok) return res.sendStatus(401);
+
+  const data = JSON.parse(raw);
+  // upsert by data.event_id (idempotent)
+  res.sendStatus(200);
+});</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="callout tip">
+                    <strong class="id">Idempotency &amp; Retry</strong><strong
+                        class="en">Idempotency &amp; Retry</strong>
+                    <span class="id">Bila pengiriman gagal karena jaringan/timeout/5xx, PayHook
+                        menyimpannya di
+                        antrean lokal dan mengirim ulang otomatis (exponential backoff). Karena
+                        <code>event_id</code> tetap sama pada retry, gunakan sebagai kunci
+                        <strong>upsert</strong> agar tidak ada transaksi ganda.</span>
+                    <span class="en">If delivery fails due to network/timeout/5xx, PayHook stores it
+                        in a local
+                        queue and retries automatically (exponential backoff). Since the
+                        <code>event_id</code> stays the same across retries, use it as an
+                        <strong>upsert</strong> key to avoid duplicate transactions.</span>
+                </div>
+            </section>
+
+            <!-- ============ HEARTBEAT ============ -->
+            <section class="doc" id="heartbeat">
+                <h2><span class="id">Heartbeat Monitoring</span><span class="en">Heartbeat
+                        Monitoring</span>
+                    <span class="badge on" style="vertical-align:middle;">Opsional</span>
+                </h2>
+                <p class="lead">
+                    <span class="id">Deteksi otomatis saat HP PayHook mati / offline / kuota habis,
+                        sebelum ada komplain pelanggan.</span>
+                    <span class="en">Automatically detect when the PayHook phone is off / offline /
+                        out of
+                        data, before customers complain.</span>
+                </p>
+                <p>
+                    <span class="id">PayHook dapat mengirim <strong>ping status</strong> berkala ke
+                        endpoint
+                        monitoring terpisah milik Anda. Jika backend tidak menerima heartbeat dalam
+                        batas
+                        waktu tertentu, tandai perangkat sebagai <em>offline</em> dan kirim
+                        peringatan
+                        (WhatsApp/Telegram/email). Fitur ini opsional — atur di aplikasi:
+                        <strong>Pengaturan → Heartbeat Monitoring</strong>. Jika tidak diisi, alur
+                        webhook
+                        transaksi tetap berjalan seperti biasa (kompatibel mundur).</span>
+                    <span class="en">PayHook can send a periodic <strong>status ping</strong> to a
+                        separate
+                        monitoring endpoint you own. If your backend does not receive a heartbeat
+                        within a
+                        threshold, mark the device <em>offline</em> and send an alert
+                        (WhatsApp/Telegram/email). This feature is optional — configure it in the
+                        app under
+                        <strong>Settings → Heartbeat Monitoring</strong>. If left empty, the
+                        transaction
+                        webhook flow keeps working as before (backward compatible).</span>
+                </p>
+
+                <h3><span class="id">Contoh Payload Heartbeat</span><span class="en">Heartbeat
+                        Payload Example</span></h3>
+                <div class="code-block">
+                    <pre><code>POST /payhook/heartbeat
+Content-Type: application/json
+X-Payhook-Timestamp: 1752300000        # jika secret diisi / if secret set
+X-Payhook-Signature: sha256=&lt;hmac&gt;  # jika secret diisi / if secret set
+
+{
+  "type": "heartbeat",
+  "device_id": "ph-a1b2c3d4e5f6",
+  "app_version": "1.5.0",
+  "listener_connected": true,
+  "battery_optimized": false,
+  "last_event_at": 1752299880000,
+  "sent_at": 1752300000000
+}</code></pre>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Field</th>
+                                <th><span class="id">Keterangan</span><span
+                                        class="en">Description</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>device_id</code></td>
+                                <td><span class="id">ID unik perangkat.</span><span
+                                        class="en">Unique device id.</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>app_version</code></td>
+                                <td><span class="id">Versi aplikasi PayHook.</span><span
+                                        class="en">PayHook app version.</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>listener_connected</code></td>
+                                <td><span class="id">Status listener notifikasi.</span><span
+                                        class="en">Notification listener status.</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>battery_optimized</code></td>
+                                <td><span class="id"><code>true</code> = optimisasi baterai masih
+                                        aktif (berisiko).</span><span class="en"><code>true</code> =
+                                        battery optimization still on (risky).</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>last_event_at</code></td>
+                                <td><span class="id">Epoch ms pembayaran terakhir
+                                        terdeteksi.</span><span class="en">Epoch ms of last detected
+                                        payment.</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>sent_at</code></td>
+                                <td><span class="id">Epoch ms saat heartbeat dikirim.</span><span
+                                        class="en">Epoch ms when heartbeat was sent.</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout">
+                    <strong class="id">Aturan monitoring yang disarankan</strong><strong
+                        class="en">Suggested monitoring rules</strong>
+                    <span class="id">Interval kirim 60–300 detik. Jika tidak ada heartbeat &gt; 2–3×
+                        interval,
+                        anggap <em>offline</em>. Gunakan <em>grace period</em> — jangan alert hanya
+                        dari satu
+                        heartbeat yang meleset — untuk menghindari false alarm.</span>
+                    <span class="en">Send every 60–300s. If no heartbeat arrives for &gt; 2–3× the
+                        interval,
+                        treat it as <em>offline</em>. Use a <em>grace period</em> — do not alert on
+                        a single
+                        missed heartbeat — to avoid false alarms.</span>
                 </div>
             </section>
 
