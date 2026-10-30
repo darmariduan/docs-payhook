@@ -89,6 +89,10 @@
         return !!elEventType && elEventType.value === "heartbeat";
     }
 
+    function isOutgoingMode() {
+        return !!elEventType && elEventType.value === "payment_out";
+    }
+
     function resolvePreviewMode() {
         var selected = elPreviewMode && elPreviewMode.value ? elPreviewMode.value : "auto";
         if (selected === "notif" || selected === "status") return selected;
@@ -116,11 +120,14 @@
     function defaultTitle() {
         if (isHeartbeatMode()) return "PayHook heartbeat";
         var name = (elSender.value || "").trim();
+        if (isOutgoingMode()) return name ? "Transfer keluar ke " + name : "Transfer keluar";
         return name ? "Uang masuk dari " + name : "Uang masuk";
     }
     function defaultText() {
         if (isHeartbeatMode()) return "Perangkat PayHook online";
-        return formatRupiah(elAmount.value) + " sudah masuk ke rekening Anda";
+        var who = (elSender.value || "").trim();
+        if (isOutgoingMode()) return "Transfer keluar " + formatRupiah(elAmount.value) + (who ? " ke " + who : "") + " berhasil";
+        return formatRupiah(elAmount.value) + " sudah masuk" + (who ? " dari " + who : "") + " ke rekening Anda";
     }
 
     function refreshTemplates(force) {
@@ -188,18 +195,25 @@
     function buildPaymentPayload(ms) {
         var src = currentSource();
         var rand = Math.random().toString(16).slice(2, 8);
-        return {
+        var out = isOutgoingMode();
+        var who = (elSender.value || "").trim().toUpperCase();
+        var payload = {
             event_id: "evt_" + ms + "_" + rand,
-            event_type: "payment.incoming",
+            event_type: out ? "payment.outgoing" : "payment.incoming",
+            direction: out ? "out" : "in",
             amount: parseInt(elAmount.value, 10) || 0,
-            source: src.name,
-            reference: "PH-" + ms,
-            timestamp: formatTimestamp(ms),
-            package_name: src.pkg,
-            notification_title: elTitle.value,
-            notification_text: elText.value,
-            sent_by: "PayHook"
+            source: src.name
         };
+        // Urutan field mengikuti WebhookSender.kt (v1.8)
+        payload[out ? "recipient" : "payer"] = who;
+        payload.reference = "PH-" + ms;
+        payload.timestamp = formatTimestamp(ms);
+        payload.timestamp_ms = ms;
+        payload.package_name = src.pkg;
+        payload.notification_title = elTitle.value;
+        payload.notification_text = elText.value;
+        payload.sent_by = "PayHook";
+        return payload;
     }
 
     function buildHeartbeatPayload(ms) {
@@ -209,7 +223,7 @@
         return {
             type: "heartbeat",
             device_id: "ph-" + rand,
-            app_version: "1.5.0",
+            app_version: "1.8.0",
             listener_connected: (elHeartbeatConnected && elHeartbeatConnected.value) !== "false",
             battery_optimized: (elHeartbeatBattery && elHeartbeatBattery.value) === "true",
             last_event_at: ms - (lastEventSec * 1000),
@@ -236,7 +250,7 @@
         return Object.assign({
             "Content-Type": "application/json",
             "Accept": "application/json",
-            "User-Agent": "PayHook-Android/2.0"
+            "User-Agent": "PayHook-Android/1.8.0"
         }, authHeaders());
     }
 

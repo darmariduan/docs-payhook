@@ -77,6 +77,10 @@
                     class="en">Webhook Configuration</span></a>
             <a href="#aplikasi" class="nav-link"><span class="id">Aplikasi Didukung</span><span
                     class="en">Supported Apps</span></a>
+            <a href="#fitur-baru" class="nav-link"><span class="id">Fitur Baru v1.8</span><span
+                    class="en">What's New v1.8</span></a>
+            <a href="#telegram" class="nav-link"><span class="id">Tujuan Telegram</span><span
+                    class="en">Telegram Destination</span></a>
 
             <h3 class="id">Referensi API</h3>
             <h3 class="en">API Reference</h3>
@@ -90,6 +94,8 @@
                     class="en">Heartbeat Monitoring</span></a>
             <a href="#integrasi" class="nav-link"><span class="id">Contoh Integrasi</span><span
                     class="en">Integration Examples</span></a>
+            <a href="#paket-laravel" class="nav-link"><span class="id">Paket Laravel</span><span
+                    class="en">Laravel Package</span></a>
 
             <h3 class="id">Uji Coba</h3>
             <h3 class="en">Testing</h3>
@@ -593,6 +599,140 @@
                 </div>
             </section>
 
+            <!-- ============ FITUR BARU v1.8 ============ -->
+            <section class="doc" id="fitur-baru">
+                <h2><span class="id">Fitur Baru v1.8</span><span class="en">What's New in v1.8</span>
+                    <span class="badge on" style="vertical-align:middle;"><span class="id">Gratis</span><span class="en">Free</span></span>
+                </h2>
+                <p class="lead">
+                    <span class="id">Semua fitur tetap gratis. Ringkasan dan cara pakainya:</span>
+                    <span class="en">Every feature remains free. Summary and how to use them:</span>
+                </p>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><span class="id">Fitur</span><span class="en">Feature</span></th>
+                                <th><span class="id">Kegunaan</span><span class="en">What it does</span></th>
+                                <th><span class="id">Lokasi di aplikasi</span><span class="en">Where in the app</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="id">Perbaikan nominal BNI</span><span class="en">BNI amount fix</span></td>
+                                <td><span class="id"><code>Rp 1,000</code> (koma sebagai ribuan) kini terbaca Rp 1.000, bukan Rp 1.</span><span class="en"><code>Rp 1,000</code> (comma thousands) now parses as Rp 1,000, not Rp 1.</span></td>
+                                <td><span class="id">Otomatis</span><span class="en">Automatic</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Format nominal per aplikasi</span><span class="en">Per-app number format</span></td>
+                                <td><span class="id">Paksa titik/koma sebagai ribuan untuk aplikasi dengan format tidak biasa.</span><span class="en">Force dot/comma thousands for apps with unusual formats.</span></td>
+                                <td><span class="id">Pengaturan → Aplikasi Terpantau</span><span class="en">Settings → Monitored Apps</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Uji Parser</span><span class="en">Parser Tester</span></td>
+                                <td><span class="id">Tempel teks notifikasi lalu lihat arah, nominal, pengirim, dan webhook tujuan — tanpa mengirim apa pun.</span><span class="en">Paste a notification text and see direction, amount, sender, and target webhooks — nothing is sent.</span></td>
+                                <td><span class="id">Pengaturan → Uji Parser</span><span class="en">Settings → Parser Tester</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Pengirim / penerima</span><span class="en">Payer / recipient</span></td>
+                                <td><span class="id">Field <code>payer</code> / <code>recipient</code> di payload.</span><span class="en"><code>payer</code> / <code>recipient</code> payload fields.</span></td>
+                                <td><span class="id">Otomatis</span><span class="en">Automatic</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Routing &amp; filter</span><span class="en">Routing &amp; filters</span></td>
+                                <td><span class="id">Pilih aplikasi sumber per webhook (mis. BNI → HMS, DANA → POS), batas nominal min/maks, dan opsi teruskan uang keluar.</span><span class="en">Pick source apps per webhook (e.g. BNI → HMS, DANA → POS), min/max amount, and optionally forward outgoing money.</span></td>
+                                <td><span class="id">Webhook → Edit → Aturan Pengiriman</span><span class="en">Webhook → Edit → Delivery Rules</span></td>
+                            </tr>
+                            <tr>
+                                <td>Telegram</td>
+                                <td><span class="id">Kirim pemberitahuan pembayaran ke grup Telegram tanpa server.</span><span class="en">Send payment alerts to a Telegram group without a server.</span></td>
+                                <td><a href="#telegram"><span class="id">Lihat panduan</span><span class="en">See guide</span></a></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Multi heartbeat</span><span class="en">Multiple heartbeats</span></td>
+                                <td><span class="id">Pantau beberapa server dari satu HP.</span><span class="en">Monitor several servers from one phone.</span></td>
+                                <td><span class="id">Pengaturan → Heartbeat Monitoring</span><span class="en">Settings → Heartbeat Monitoring</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Arus kas</span><span class="en">Cash flow</span></td>
+                                <td><span class="id">Laporan uang masuk &amp; keluar per hari/minggu/bulan, kategori, catatan manual, ekspor CSV. Data hanya di HP.</span><span class="en">Income &amp; expense report by day/week/month, categories, manual entries, CSV export. Data stays on the phone.</span></td>
+                                <td><span class="id">Beranda → Arus kas hari ini</span><span class="en">Home → Today's cash flow</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Rekap harian</span><span class="en">Daily recap</span></td>
+                                <td><span class="id">Notifikasi ringkasan setiap malam (opsional, aktifkan di pengaturan; jam bisa diatur).</span><span class="en">Nightly summary notification (opt-in; configurable hour).</span></td>
+                                <td><span class="id">Pengaturan → Rekap harian</span><span class="en">Settings → Daily recap</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Kesehatan perangkat</span><span class="en">Device health</span></td>
+                                <td><span class="id">Cek akses notifikasi, listener, optimasi baterai, penghemat data, dan autostart (Xiaomi/Oppo/Vivo/dll).</span><span class="en">Checks notification access, listener, battery optimization, data saver, and OEM autostart.</span></td>
+                                <td><span class="id">Beranda → Cek</span><span class="en">Home → Check</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Backup &amp; pindah HP</span><span class="en">Backup &amp; device transfer</span></td>
+                                <td><span class="id">Konfigurasi terenkripsi AES-256 (password) ke file atau QR.</span><span class="en">AES-256 encrypted (password) configuration to a file or QR code.</span></td>
+                                <td><span class="id">Pengaturan → Backup &amp; Pindah HP</span><span class="en">Settings → Backup &amp; Transfer</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Widget &amp; kunci PIN</span><span class="en">Widget &amp; PIN lock</span></td>
+                                <td><span class="id">Widget status + transaksi terakhir; kunci aplikasi dengan PIN/sidik jari.</span><span class="en">Status + last transaction widget; lock the app with PIN/biometrics.</span></td>
+                                <td><span class="id">Pengaturan → Privasi &amp; Kunci</span><span class="en">Settings → Privacy &amp; Lock</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ============ TELEGRAM ============ -->
+            <section class="doc" id="telegram">
+                <h2><span class="id">Tujuan Telegram</span><span class="en">Telegram Destination</span></h2>
+                <p>
+                    <span class="id">Tidak punya server? PayHook bisa langsung mengirim pesan ke grup atau
+                        chat Telegram setiap ada pembayaran masuk. Cocok untuk pemilik usaha yang ingin
+                        tahu pembayaran di kasir dari mana saja.</span>
+                    <span class="en">No server? PayHook can message a Telegram group or chat for every
+                        incoming payment — handy for owners who want to see cashier payments from
+                        anywhere.</span>
+                </p>
+                <ol>
+                    <li><span class="id">Di Telegram, chat <strong>@BotFather</strong> → <code>/newbot</code> → salin
+                            <strong>token bot</strong>.</span><span class="en">In Telegram, chat
+                            <strong>@BotFather</strong> → <code>/newbot</code> → copy the <strong>bot
+                                token</strong>.</span></li>
+                    <li><span class="id">Tambahkan bot ke grup usaha Anda (atau chat bot langsung), lalu kirim
+                            pesan apa saja.</span><span class="en">Add the bot to your business group (or
+                            chat it directly), then send any message.</span></li>
+                    <li><span class="id">Buka <code>https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</code> di
+                            browser dan salin nilai <code>"chat":{"id":…}</code>. ID grup biasanya diawali
+                            tanda minus.</span><span class="en">Open
+                            <code>https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</code> and copy
+                            <code>"chat":{"id":…}</code>. Group IDs usually start with a minus sign.</span></li>
+                    <li><span class="id">Di PayHook: <strong>Webhook → Tambah → Jenis Tujuan: Telegram</strong>, isi
+                            token &amp; Chat ID, tekan <strong>Kirim Pesan Tes</strong>.</span><span
+                            class="en">In PayHook: <strong>Webhook → Add → Destination: Telegram</strong>,
+                            fill token &amp; Chat ID, tap <strong>Send Test Message</strong>.</span></li>
+                </ol>
+                <div class="code-block">
+                    <pre><code>💰 Pembayaran Masuk
+Rp 25.000
+Dari: GOPAY
+Sumber: BNI Merchant
+Waktu: 30/10/2026 18:24
+ID: evt_1793359440000_a1b2c3</code></pre>
+                </div>
+                <div class="callout">
+                    <strong class="id">Privasi</strong><strong class="en">Privacy</strong>
+                    <span class="id">Pesan dikirim sebagai teks biasa lewat server Telegram. Isi notifikasi
+                        lengkap tidak ikut dikirim — hanya nominal, pengirim, sumber, waktu, dan ID. Token
+                        bot disamarkan di log aplikasi. Telegram ikut antrean retry yang sama dengan
+                        webhook.</span>
+                    <span class="en">Messages are sent as plain text via Telegram servers. The full
+                        notification text is not included — only amount, sender, source, time, and ID. The
+                        bot token is masked in the app logs. Telegram uses the same retry queue as
+                        webhooks.</span>
+                </div>
+            </section>
+
             <!-- ============ PAYLOAD ============ -->
             <section class="doc" id="payload">
                 <h2><span class="id">Format Payload</span><span class="en">Payload Format</span>
@@ -609,7 +749,7 @@
                     <pre><code>POST /your-endpoint HTTP/1.1
 Content-Type: application/json
 Accept: application/json
-User-Agent: PayHook-Android/2.0
+User-Agent: PayHook-Android/1.8.0
 Authorization: Bearer &lt;token&gt;          # tergantung tipe auth / depends on auth type
 X-Payhook-Timestamp: 1752300000         # jika HMAC diaktifkan / if HMAC enabled
 X-Payhook-Nonce: 9f2c...                 # jika HMAC diaktifkan / if HMAC enabled
@@ -621,14 +761,39 @@ X-Payhook-Signature: sha256=&lt;hmac&gt;   # jika HMAC diaktifkan / if HMAC enab
                     <pre><code>{
   "event_id": "evt_1752300000000_a1b2c3",
   "event_type": "payment.incoming",
+  "direction": "in",
   "amount": 300000,
   "source": "BCA Mobile",
+  "payer": "JOHN",
   "reference": "PH-1711425600000",
   "timestamp": "2026-03-26 10:26:00",
+  "timestamp_ms": 1774495560000,
   "package_name": "com.bca",
   "notification_title": "Uang masuk dari John",
-  "notification_text": "Rp 300.000,00 sudah masuk ke rekening Anda",
+  "notification_text": "Rp 300.000,00 sudah masuk dari JOHN ke rekening Anda",
   "sent_by": "PayHook"
+}</code></pre>
+                </div>
+
+                <p>
+                    <span class="id">Sejak v1.8, uang keluar dapat ikut diteruskan (opsional per webhook,
+                        menu <strong>Teruskan juga uang keluar</strong>). Bentuknya sama dengan
+                        <code>event_type</code> <code>payment.outgoing</code> dan field
+                        <code>recipient</code> menggantikan <code>payer</code>:</span>
+                    <span class="en">Since v1.8, outgoing money can optionally be forwarded too (per webhook,
+                        <strong>Also forward outgoing money</strong>). Same shape with
+                        <code>event_type</code> <code>payment.outgoing</code>, and <code>recipient</code>
+                        instead of <code>payer</code>:</span>
+                </p>
+                <div class="code-block">
+                    <pre><code>{
+  "event_id": "evt_1752300100000_d4e5f6",
+  "event_type": "payment.outgoing",
+  "direction": "out",
+  "amount": 150000,
+  "source": "BCA Mobile",
+  "recipient": "PLN PRABAYAR",
+  ...
 }</code></pre>
                 </div>
 
@@ -661,6 +826,14 @@ X-Payhook-Signature: sha256=&lt;hmac&gt;   # jika HMAC diaktifkan / if HMAC enab
                                         type, e.g. <code>payment.incoming</code>.</span></td>
                             </tr>
                             <tr>
+                                <td><code>direction</code></td>
+                                <td>string</td>
+                                <td><span class="id"><code>in</code> (uang masuk) atau
+                                        <code>out</code> (uang keluar). <em>v1.8+</em></span><span
+                                        class="en"><code>in</code> (incoming) or <code>out</code>
+                                        (outgoing). <em>v1.8+</em></span></td>
+                            </tr>
+                            <tr>
                                 <td><code>amount</code></td>
                                 <td>number (long)</td>
                                 <td><span class="id">Nominal Rupiah, bilangan bulat tanpa
@@ -673,6 +846,16 @@ X-Payhook-Signature: sha256=&lt;hmac&gt;   # jika HMAC diaktifkan / if HMAC enab
                                 <td><span class="id">Nama aplikasi sumber, mis. &ldquo;BCA
                                         Mobile&rdquo;.</span><span class="en">Source app name, e.g.
                                         &ldquo;BCA Mobile&rdquo;.</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>payer</code> / <code>recipient</code></td>
+                                <td>string</td>
+                                <td><span class="id">Pengirim (uang masuk) atau penerima (uang keluar)
+                                        yang dibaca dari teks notifikasi, mis. &ldquo;GOPAY&rdquo;.
+                                        <em>Best effort</em> — bisa kosong. <em>v1.8+</em></span><span
+                                        class="en">Sender (incoming) or recipient (outgoing) read from
+                                        the notification text, e.g. &ldquo;GOPAY&rdquo;. Best effort —
+                                        may be empty. <em>v1.8+</em></span></td>
                             </tr>
                             <tr>
                                 <td><code>reference</code></td>
@@ -690,6 +873,14 @@ X-Payhook-Signature: sha256=&lt;hmac&gt;   # jika HMAC diaktifkan / if HMAC enab
                                         perangkat).</span><span class="en">Detection time,
                                         <code>yyyy-MM-dd HH:mm:ss</code> (device local time).</span>
                                 </td>
+                            </tr>
+                            <tr>
+                                <td><code>timestamp_ms</code></td>
+                                <td>number (long)</td>
+                                <td><span class="id">Waktu deteksi dalam epoch milidetik (tanpa
+                                        ambiguitas zona waktu). <em>v1.8+</em></span><span
+                                        class="en">Detection time in epoch milliseconds (no timezone
+                                        ambiguity). <em>v1.8+</em></span></td>
                             </tr>
                             <tr>
                                 <td><code>package_name</code></td>
@@ -717,6 +908,16 @@ X-Payhook-Signature: sha256=&lt;hmac&gt;   # jika HMAC diaktifkan / if HMAC enab
                                         <code>"PayHook"</code>.</span><span class="en">Always
                                         <code>"PayHook"</code>.</span></td>
                             </tr>
+                            <tr>
+                                <td><code>is_test</code></td>
+                                <td>boolean</td>
+                                <td><span class="id">Hanya ada (bernilai <code>true</code>) saat
+                                        tombol <strong>Test Webhook</strong> ditekan. Abaikan untuk
+                                        pencocokan invoice. <em>v1.8+</em></span><span class="en">Only
+                                        present (<code>true</code>) when the <strong>Test
+                                        Webhook</strong> button is used. Ignore it for invoice
+                                        matching. <em>v1.8+</em></span></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -730,6 +931,22 @@ X-Payhook-Signature: sha256=&lt;hmac&gt;   # jika HMAC diaktifkan / if HMAC enab
                     <span class="en">Reply with a <code>2xx</code> status to be counted as success.
                         Other statuses (4xx/5xx) or a timeout (&gt;15s) are logged as failed in the
                         app's activity log.</span>
+                </div>
+
+                <div class="callout">
+                    <strong class="id">Retry &amp; redirect</strong><strong class="en">Retry &amp;
+                        redirect</strong>
+                    <span class="id"><code>5xx</code>, <code>429</code>, dan gangguan jaringan dicoba
+                        ulang otomatis (backoff hingga 8 kali) dengan <code>event_id</code> yang sama.
+                        <code>4xx</code> lainnya dianggap gagal permanen. Sejak v1.8 PayHook
+                        <strong>tidak mengikuti redirect</strong> (3xx) agar token tidak terkirim ke
+                        host lain — gunakan URL final (mis. tanpa redirect http&rarr;https atau garis
+                        miring).</span>
+                    <span class="en"><code>5xx</code>, <code>429</code>, and network errors are retried
+                        automatically (backoff up to 8 times) with the same <code>event_id</code>. Other
+                        <code>4xx</code> are permanent failures. Since v1.8 PayHook <strong>does not
+                        follow redirects</strong> (3xx) so tokens never leak to another host — use the
+                        final URL.</span>
                 </div>
             </section>
 
@@ -927,7 +1144,7 @@ app.post('/payhook', (req, res) =&gt; {
             <section class="doc" id="heartbeat">
                 <h2><span class="id">Heartbeat Monitoring</span><span class="en">Heartbeat
                         Monitoring</span>
-                    <span class="badge on" style="vertical-align:middle;">Opsional</span>
+                    <span class="badge on" style="vertical-align:middle;"><span class="id">Opsional</span><span class="en">Optional</span></span>
                 </h2>
                 <p class="lead">
                     <span class="id">Deteksi otomatis saat HP PayHook mati / offline / kuota habis,
@@ -959,18 +1176,36 @@ app.post('/payhook', (req, res) =&gt; {
                         webhook flow keeps working as before (backward compatible).</span>
                 </p>
 
+                <div class="callout tip">
+                    <strong class="id">Multi heartbeat (v1.8)</strong><strong class="en">Multiple
+                        heartbeats (v1.8)</strong>
+                    <span class="id">Satu HP PayHook kini dapat mengirim heartbeat ke
+                        <strong>beberapa server sekaligus</strong> (mis. HMS dan POS), masing-masing
+                        dengan URL, token, secret, dan interval sendiri. Jika satu server tidak
+                        merespons 2x berturut, aplikasi menampilkan peringatan khusus untuk server
+                        tersebut. Pengaturan lama otomatis dipindahkan menjadi tujuan
+                        &ldquo;Heartbeat Utama&rdquo;.</span>
+                    <span class="en">One PayHook phone can now send heartbeats to <strong>several
+                        servers at once</strong> (e.g. HMS and POS), each with its own URL, token,
+                        secret, and interval. If a server fails twice in a row, the app shows an alert
+                        for that server only. The old setting is migrated to a &ldquo;Heartbeat
+                        Utama&rdquo; target automatically.</span>
+                </div>
+
                 <h3><span class="id">Contoh Payload Heartbeat</span><span class="en">Heartbeat
                         Payload Example</span></h3>
                 <div class="code-block">
                     <pre><code>POST /payhook/heartbeat
 Content-Type: application/json
+Authorization: Bearer &lt;token&gt;      # jika token diisi / if token set
 X-Payhook-Timestamp: 1752300000        # jika secret diisi / if secret set
+X-Payhook-Nonce: 9f2c...               # jika secret diisi / if secret set (v1.8+)
 X-Payhook-Signature: sha256=&lt;hmac&gt;  # jika secret diisi / if secret set
 
 {
   "type": "heartbeat",
   "device_id": "ph-a1b2c3d4e5f6",
-  "app_version": "1.5.0",
+  "app_version": "1.8.0",
   "listener_connected": true,
   "battery_optimized": false,
   "last_event_at": 1752299880000,
@@ -1093,6 +1328,12 @@ echo json_encode(['status' =&gt; 'ok']);</code></pre>
                     </div>
 
                     <div class="tab-panel" data-panel="laravel">
+                        <p><span class="id">Lebih praktis: gunakan <a href="#paket-laravel">paket
+                                    resmi <code>darmariduan/payhook-laravel</code></a> yang sudah
+                                menangani HMAC, anti-replay, dan idempotensi. Contoh manual:</span><span
+                                class="en">Easier: use the <a href="#paket-laravel">official
+                                    <code>darmariduan/payhook-laravel</code> package</a>, which already
+                                handles HMAC, anti-replay, and idempotency. Manual example:</span></p>
                         <div class="code-block">
                             <pre><code>// routes/api.php
 Route::post('/payhook', function (Illuminate\Http\Request $request) {
@@ -1172,6 +1413,67 @@ if __name__ == "__main__":
                 </div>
             </section>
 
+            <!-- ============ PAKET LARAVEL ============ -->
+            <section class="doc" id="paket-laravel">
+                <h2><span class="id">Paket Laravel</span><span class="en">Laravel Package</span></h2>
+                <p class="lead">
+                    <span class="id"><code>darmariduan/payhook-laravel</code> menangani seluruh sisi server:
+                        verifikasi token &amp; HMAC, anti-replay, idempotensi <code>event_id</code>, dan
+                        event Laravel yang siap pakai.</span>
+                    <span class="en"><code>darmariduan/payhook-laravel</code> handles the whole server side:
+                        token &amp; HMAC verification, anti-replay, <code>event_id</code> idempotency, and
+                        ready-to-use Laravel events.</span>
+                </p>
+                <div class="code-block">
+                    <pre><code>composer require darmariduan/payhook-laravel
+
+# .env — sama dengan pengaturan webhook di aplikasi / same as the app webhook settings
+PAYHOOK_TOKEN=token-bearer
+PAYHOOK_SECRET=secret-hmac</code></pre>
+                </div>
+                <p>
+                    <span class="id">URL webhook di aplikasi: <code>https://domain-anda.com/payhook/webhook</code>,
+                        heartbeat: <code>https://domain-anda.com/payhook/heartbeat</code>.</span>
+                    <span class="en">Webhook URL in the app: <code>https://your-domain.com/payhook/webhook</code>,
+                        heartbeat: <code>https://your-domain.com/payhook/heartbeat</code>.</span>
+                </p>
+                <div class="code-block">
+                    <pre><code>use Illuminate\Support\Facades\Event;
+use PayHook\Laravel\Events\PaymentReceived;
+use PayHook\Laravel\Facades\PayHook;
+
+// Buat invoice dengan nominal unik / create an invoice with a unique amount
+$total = PayHook::uniqueAmount(100000, fn (int $a) =&gt;
+    Invoice::where('unique_total', $a)-&gt;where('status', 'unpaid')-&gt;exists());
+
+// Dipanggil sekali per event_id, aman untuk retry / called once per event_id
+// Tombol "Test Webhook" tidak memicu event (default) / test webhooks are ignored by default
+Event::listen(function (PaymentReceived $e) {
+    Invoice::where('unique_total', $e-&gt;payment-&gt;amount)
+        -&gt;where('status', 'unpaid')-&gt;first()?-&gt;update(['status' =&gt; 'paid']);
+});
+
+PayHook::isOnline('ph-a1b2c3d4e5f6'); // status heartbeat perangkat</code></pre>
+                </div>
+                <div class="callout">
+                    <strong class="id">Catatan</strong><strong class="en">Notes</strong>
+                    <span class="id">Heartbeat di aplikasi selalu memakai <strong>Bearer token</strong> —
+                        isi token di tujuan heartbeat (atau atur <code>PAYHOOK_HEARTBEAT_TOKEN</code> bila
+                        webhook memakai API Key/Basic). Beri <em>unique index</em> pada kolom nominal unik
+                        invoice yang belum dibayar agar dua invoice tidak mendapat nominal yang sama.</span>
+                    <span class="en">Heartbeats from the app always use a <strong>Bearer token</strong> —
+                        fill the token on the heartbeat target (or set <code>PAYHOOK_HEARTBEAT_TOKEN</code>
+                        if your webhook uses API Key/Basic). Add a unique index on the unique-amount column
+                        of unpaid invoices so two invoices never share an amount.</span>
+                </div>
+                <p>
+                    <span class="id">Dokumentasi lengkap &amp; kode sumber:</span>
+                    <span class="en">Full documentation &amp; source code:</span>
+                    <a href="https://github.com/darmariduan/payhook-laravel" target="_blank" rel="noopener">github.com/darmariduan/payhook-laravel</a>
+                    · <a href="https://packagist.org/packages/darmariduan/payhook-laravel" target="_blank" rel="noopener">Packagist</a>
+                </p>
+            </section>
+
             <!-- ============ SIMULATOR ============ -->
             <section class="doc" id="simulator">
                 <h2><span class="id">Simulator / Sandbox</span><span class="en">Simulator /
@@ -1192,6 +1494,7 @@ if __name__ == "__main__":
                                 class="en">Payload Type</span></label>
                         <select id="simEventType">
                             <option value="payment">payment.incoming</option>
+                            <option value="payment_out">payment.outgoing</option>
                             <option value="heartbeat">heartbeat</option>
                         </select>
 
@@ -1204,8 +1507,8 @@ if __name__ == "__main__":
                                     class="en">Amount (Rp)</span></label>
                             <input type="number" id="simAmount" value="300000" min="1" />
 
-                            <label for="simSender"><span class="id">Nama Pengirim</span><span
-                                    class="en">Sender Name</span></label>
+                            <label for="simSender"><span class="id">Nama Pengirim / Penerima</span><span
+                                    class="en">Sender / Recipient Name</span></label>
                             <input type="text" id="simSender" value="John" />
 
                             <label for="simTitle"><span class="id">Judul Notifikasi</span><span
@@ -1381,11 +1684,19 @@ if __name__ == "__main__":
                 <h3><span class="id">Nominal terbaca salah / kosong?</span><span class="en">Amount
                         parsed wrong / empty?</span></h3>
                 <p><span class="id">PayHook mengekstrak angka dari teks notifikasi (mis.
-                        <code>Rp 300.000</code>, <code>IDR 300,000</code>). Jika format bank Anda
-                        tidak dikenali, sesuaikan kata kunci di aplikasi.</span>
+                        <code>Rp 300.000</code>, <code>Rp 1,000</code>, <code>IDR 300,000.00</code>).
+                        Gunakan <strong>Pengaturan → Uji Parser</strong> untuk melihat hasilnya. Jika
+                        nominal salah, atur <strong>Format nominal</strong> aplikasi tersebut di
+                        Aplikasi Terpantau. Jika notifikasi diabaikan, tambahkan kata kunci di
+                        <strong>Kata Kunci Deteksi</strong>. Pengguna BNI Merchant: perbarui ke v1.8
+                        (perbaikan <code>Rp 1,000</code> terbaca Rp 1).</span>
                     <span class="en">PayHook extracts numbers from the notification text (e.g.
-                        <code>Rp 300.000</code>, <code>IDR 300,000</code>). If your bank's format is
-                        not recognized, adjust the keywords in the app.</span>
+                        <code>Rp 300.000</code>, <code>Rp 1,000</code>, <code>IDR 300,000.00</code>).
+                        Use <strong>Settings → Parser Tester</strong> to see the result. If the amount
+                        is wrong, set the app's <strong>Number format</strong> in Monitored Apps. If the
+                        notification is ignored, add a keyword in <strong>Detection Keywords</strong>.
+                        BNI Merchant users: update to v1.8 (fixes <code>Rp 1,000</code> read as
+                        Rp 1).</span>
                 </p>
 
                 <h3><span class="id">Bagaimana menghindari data ganda?</span><span class="en">How to
