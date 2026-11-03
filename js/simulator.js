@@ -204,7 +204,7 @@
             amount: parseInt(elAmount.value, 10) || 0,
             source: src.name
         };
-        // Urutan field mengikuti WebhookSender.kt (v1.8)
+        // Urutan field mengikuti WebhookSender.kt (v1.8–v1.9)
         payload[out ? "recipient" : "payer"] = who;
         payload.reference = "PH-" + ms;
         payload.timestamp = formatTimestamp(ms);
@@ -223,7 +223,7 @@
         return {
             type: "heartbeat",
             device_id: "ph-" + rand,
-            app_version: "1.8.0",
+            app_version: "1.9.0",
             listener_connected: (elHeartbeatConnected && elHeartbeatConnected.value) !== "false",
             battery_optimized: (elHeartbeatBattery && elHeartbeatBattery.value) === "true",
             last_event_at: ms - (lastEventSec * 1000),
@@ -250,7 +250,7 @@
         return Object.assign({
             "Content-Type": "application/json",
             "Accept": "application/json",
-            "User-Agent": "PayHook-Android/1.8.0"
+            "User-Agent": "PayHook-Android/1.9.0"
         }, authHeaders());
     }
 

@@ -77,8 +77,10 @@
                     class="en">Webhook Configuration</span></a>
             <a href="#aplikasi" class="nav-link"><span class="id">Aplikasi Didukung</span><span
                     class="en">Supported Apps</span></a>
-            <a href="#fitur-baru" class="nav-link"><span class="id">Fitur Baru v1.8</span><span
-                    class="en">What's New v1.8</span></a>
+            <a href="#fitur-v19" class="nav-link"><span class="id">Fitur Baru v1.9</span><span
+                    class="en">What's New v1.9</span></a>
+            <a href="#fitur-baru" class="nav-link"><span class="id">Fitur v1.8</span><span
+                    class="en">v1.8 Features</span></a>
             <a href="#telegram" class="nav-link"><span class="id">Tujuan Telegram</span><span
                     class="en">Telegram Destination</span></a>
 
@@ -599,9 +601,87 @@
                 </div>
             </section>
 
+            <!-- ============ FITUR BARU v1.9 ============ -->
+            <section class="doc" id="fitur-v19">
+                <h2><span class="id">Fitur Baru v1.9</span><span class="en">What's New in v1.9</span>
+                    <span class="badge on" style="vertical-align:middle;"><span class="id">Gratis</span><span class="en">Free</span></span>
+                </h2>
+                <p class="lead">
+                    <span class="id">Fokus v1.9: buku kas yang rapi untuk pembukuan dan alat untuk melacak notifikasi yang tidak tertangkap. <strong>Payload webhook tidak berubah</strong> — integrasi yang sudah berjalan (termasuk <code>payhook-laravel</code>) tidak perlu diubah.</span>
+                    <span class="en">v1.9 focuses on a proper cash book for bookkeeping and tools to trace missed notifications. <strong>The webhook payload is unchanged</strong> — existing integrations (including <code>payhook-laravel</code>) need no changes.</span>
+                </p>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><span class="id">Fitur</span><span class="en">Feature</span></th>
+                                <th><span class="id">Kegunaan</span><span class="en">What it does</span></th>
+                                <th><span class="id">Lokasi di aplikasi</span><span class="en">Where in the app</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="id">Kirim Test Live</span><span class="en">Send Live Test</span></td>
+                                <td><span class="id">Kirim hasil Uji Parser ke webhook/Telegram sungguhan dengan <code>"is_test": true</code>, lalu lihat kode HTTP, waktu respons, dan isi balasan server. Tidak dicatat ke Arus Kas maupun Log Aktivitas.</span><span class="en">Send the Parser Tester result to a real webhook/Telegram with <code>"is_test": true</code> and see the HTTP code, response time, and response body. Not recorded in Cash Flow or the Activity Log.</span></td>
+                                <td><span class="id">Pengaturan → Uji Parser</span><span class="en">Settings → Parser Tester</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Akun &amp; dompet</span><span class="en">Accounts &amp; wallets</span></td>
+                                <td><span class="id">Kas Tunai, rekening bank, e-wallet dengan saldo awal &amp; saldo berjalan. Tiap aplikasi terpantau dapat dipetakan ke satu akun.</span><span class="en">Cash, bank, and e-wallet accounts with opening and running balances. Each monitored app can be mapped to an account.</span></td>
+                                <td><span class="id">Arus Kas → ⋮ → Kelola akun</span><span class="en">Cash Flow → ⋮ → Manage accounts</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Pemasukan, Pengeluaran, Transfer</span><span class="en">Income, Expense, Transfer</span></td>
+                                <td><span class="id">Catat manual dengan pilihan akun asal/tujuan, tanggal &amp; jam. Transfer antar akun (mis. tarik tunai) tidak dihitung sebagai pemasukan/pengeluaran.</span><span class="en">Manual entries with source/destination account, date and time. Transfers between accounts (e.g. ATM withdrawal) are not counted as income/expense.</span></td>
+                                <td><span class="id">Arus Kas → Catat</span><span class="en">Cash Flow → Add</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Kategori berikon</span><span class="en">Icon categories</span></td>
+                                <td><span class="id">Kategori terpisah untuk pemasukan &amp; pengeluaran, tampil sebagai grid ikon; bisa ditambah, diganti nama, disembunyikan.</span><span class="en">Separate income and expense categories shown as an icon grid; add, rename, or hide them.</span></td>
+                                <td><span class="id">Arus Kas → ⋮ → Kelola kategori</span><span class="en">Cash Flow → ⋮ → Manage categories</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Cari &amp; filter</span><span class="en">Search &amp; filters</span></td>
+                                <td><span class="id">Cari nama/catatan; filter jenis, akun, kategori, dan rentang tanggal bebas.</span><span class="en">Search names/notes; filter by type, account, category, and any date range.</span></td>
+                                <td><span class="id">Arus Kas → ikon cari</span><span class="en">Cash Flow → search icon</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Ekspor Excel</span><span class="en">Excel export</span></td>
+                                <td><span class="id">File <code>.xlsx</code> asli: sheet Transaksi (kolom Tanggal, Jam, Jenis, Kategori, Akun Asal/Tujuan, Masuk, Keluar, Transfer, Pihak, No. Rek/ID, Keterangan, Sumber) dengan format Rupiah, baris total, header beku &amp; filter, plus sheet Ringkasan. CSV tetap tersedia dengan pemisah <code>;</code> agar langsung rapi di Excel berbahasa Indonesia.</span><span class="en">A real <code>.xlsx</code> file: a Transactions sheet (Date, Time, Type, Category, From/To Account, In, Out, Transfer, Party, Account No./ID, Note, Source) with Rupiah format, totals row, frozen header and filters, plus a Summary sheet. CSV remains available with a <code>;</code> separator for Indonesian-locale Excel.</span></td>
+                                <td><span class="id">Arus Kas → ⋮ → Ekspor</span><span class="en">Cash Flow → ⋮ → Export</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Log Diagnostik</span><span class="en">Diagnostics log</span></td>
+                                <td><span class="id">Setiap notifikasi dari aplikasi terpantau tercatat beserta hasilnya (diproses / diabaikan + alasan), plus aplikasi belum terpantau yang mengirim nominal. Tombol <em>Uji di Parser</em> untuk mencoba ulang teksnya. Lokal, 7 hari; isi bernada OTP tidak disimpan.</span><span class="en">Every notification from monitored apps is logged with its outcome (processed / ignored + reason), plus unmonitored apps that send amounts. <em>Test in Parser</em> replays the text. Local only, 7 days; OTP-like content is not stored.</span></td>
+                                <td><span class="id">Pengaturan → Log Diagnostik Notifikasi</span><span class="en">Settings → Notification Diagnostics Log</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Status listener nyata</span><span class="en">Real listener status</span></td>
+                                <td><span class="id">Beranda kini menampilkan <em>Listener Terputus</em> bila izin ada tetapi sistem tidak menyambungkan PayHook. Kesehatan Perangkat menampilkan kapan notifikasi terakhir diterima dan panduan khusus Realme/Oppo/OnePlus, Vivo, Xiaomi, Infinix/Tecno.</span><span class="en">Home now shows <em>Listener Disconnected</em> when permission is granted but the system has not bound PayHook. Device Health shows when the last notification arrived plus brand-specific guides.</span></td>
+                                <td><span class="id">Beranda → Cek HP</span><span class="en">Home → Check</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Pembacaan notifikasi lebih luas</span><span class="en">Broader notification reading</span></td>
+                                <td><span class="id">Teks juga dibaca dari gaya notifikasi daftar/pesan/ticker; notifikasi ringkasan grup dilewati agar tidak ganda.</span><span class="en">Text is also read from inbox/messaging/ticker styles; group summaries are skipped to avoid duplicates.</span></td>
+                                <td><span class="id">Otomatis</span><span class="en">Automatic</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Penyempurnaan tampilan</span><span class="en">UI polish</span></td>
+                                <td><span class="id">Tombol aksi cepat seragam, pemindai QR backup tegak (portrait), jam rekap harian bisa dipilih jam &amp; menit.</span><span class="en">Uniform quick-action buttons, portrait QR backup scanner, daily recap time with hour &amp; minute.</span></td>
+                                <td>—</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="callout">
+                    <span class="id"><strong>Catatan:</strong> sejak v1.9 catatan Arus Kas tidak lagi dihapus otomatis (saldo akun dihitung dari riwayatnya). Backup kini juga menyertakan akun &amp; kategori.</span>
+                    <span class="en"><strong>Note:</strong> since v1.9 cash-flow entries are no longer auto-deleted (account balances depend on their history). Backups now include accounts and categories.</span>
+                </div>
+            </section>
+
             <!-- ============ FITUR BARU v1.8 ============ -->
             <section class="doc" id="fitur-baru">
-                <h2><span class="id">Fitur Baru v1.8</span><span class="en">What's New in v1.8</span>
+                <h2><span class="id">Fitur v1.8</span><span class="en">v1.8 Features</span>
                     <span class="badge on" style="vertical-align:middle;"><span class="id">Gratis</span><span class="en">Free</span></span>
                 </h2>
                 <p class="lead">
@@ -655,7 +735,7 @@
                             </tr>
                             <tr>
                                 <td><span class="id">Arus kas</span><span class="en">Cash flow</span></td>
-                                <td><span class="id">Laporan uang masuk &amp; keluar per hari/minggu/bulan, kategori, catatan manual, ekspor CSV. Data hanya di HP.</span><span class="en">Income &amp; expense report by day/week/month, categories, manual entries, CSV export. Data stays on the phone.</span></td>
+                                <td><span class="id">Laporan uang masuk &amp; keluar per hari/minggu/bulan, kategori, catatan manual, ekspor CSV. Data hanya di HP. <em>v1.9: akun, transfer &amp; ekspor Excel — <a href="#fitur-v19">lihat</a>.</em></span><span class="en">Income &amp; expense report by day/week/month, categories, manual entries, CSV export. Data stays on the phone. <em>v1.9: accounts, transfers &amp; Excel export — <a href="#fitur-v19">see</a>.</em></span></td>
                                 <td><span class="id">Beranda → Arus kas hari ini</span><span class="en">Home → Today's cash flow</span></td>
                             </tr>
                             <tr>
@@ -749,7 +829,7 @@ ID: evt_1793359440000_a1b2c3</code></pre>
                     <pre><code>POST /your-endpoint HTTP/1.1
 Content-Type: application/json
 Accept: application/json
-User-Agent: PayHook-Android/1.8.0
+User-Agent: PayHook-Android/1.9.0
 Authorization: Bearer &lt;token&gt;          # tergantung tipe auth / depends on auth type
 X-Payhook-Timestamp: 1752300000         # jika HMAC diaktifkan / if HMAC enabled
 X-Payhook-Nonce: 9f2c...                 # jika HMAC diaktifkan / if HMAC enabled
@@ -912,10 +992,11 @@ X-Payhook-Signature: sha256=&lt;hmac&gt;   # jika HMAC diaktifkan / if HMAC enab
                                 <td><code>is_test</code></td>
                                 <td>boolean</td>
                                 <td><span class="id">Hanya ada (bernilai <code>true</code>) saat
-                                        tombol <strong>Test Webhook</strong> ditekan. Abaikan untuk
+                                        tombol <strong>Test Webhook</strong> atau <strong>Kirim Test Live</strong>
+                                        (Uji Parser, v1.9) ditekan. Abaikan untuk
                                         pencocokan invoice. <em>v1.8+</em></span><span class="en">Only
                                         present (<code>true</code>) when the <strong>Test
-                                        Webhook</strong> button is used. Ignore it for invoice
+                                        Webhook</strong> or <strong>Send Live Test</strong> (Parser Tester, v1.9) button is used. Ignore it for invoice
                                         matching. <em>v1.8+</em></span></td>
                             </tr>
                         </tbody>
@@ -1205,7 +1286,7 @@ X-Payhook-Signature: sha256=&lt;hmac&gt;  # jika secret diisi / if secret set
 {
   "type": "heartbeat",
   "device_id": "ph-a1b2c3d4e5f6",
-  "app_version": "1.8.0",
+  "app_version": "1.9.0",
   "listener_connected": true,
   "battery_optimized": false,
   "last_event_at": 1752299880000,
@@ -1680,6 +1761,21 @@ PayHook::isOnline('ph-a1b2c3d4e5f6'); // status heartbeat perangkat</code></pre>
                         valid HTTPS. Check the in-app activity log for the response HTTP
                         code.</span>
                 </p>
+
+                <h3><span class="id">Pembayaran muncul di notifikasi HP tapi tidak tertangkap?</span><span
+                        class="en">Payment shows in the phone's notifications but isn't captured?</span></h3>
+                <p><span class="id">Buka <strong>Pengaturan → Log Diagnostik Notifikasi</strong> (v1.9):</span>
+                    <span class="en">Open <strong>Settings → Notification Diagnostics Log</strong> (v1.9):</span></p>
+                <ul>
+                    <li><span class="id"><strong>Notifikasi tidak ada di log sama sekali</strong> → PayHook tidak menerimanya dari sistem. Matikan lalu nyalakan lagi <em>Akses notifikasi</em> PayHook, izinkan autostart &amp; tanpa batasan baterai (lihat panduan merek HP di <strong>Kesehatan Perangkat</strong>), dan kunci PayHook di Recent Apps. Umum terjadi di Realme/Oppo/Vivo/Xiaomi.</span>
+                        <span class="en"><strong>Not in the log at all</strong> → PayHook never received it from the system. Toggle PayHook's <em>Notification access</em> off and on, allow autostart and unrestricted battery (see the brand guide in <strong>Device Health</strong>), and lock PayHook in Recent Apps. Common on Realme/Oppo/Vivo/Xiaomi.</span></li>
+                    <li><span class="id"><strong>Tercatat "Belum dipantau"</strong> → aplikasi pengirim berbeda dari yang Anda pantau (mis. aplikasi Shopee untuk penjual/merchant ≠ aplikasi Shopee biasa). Tambahkan aplikasi tersebut di Aplikasi Terpantau.</span>
+                        <span class="en"><strong>Logged as "Not monitored"</strong> → the sending app differs from the one you monitor (e.g. Shopee's seller/merchant app ≠ the regular Shopee app). Add that app in Monitored Apps.</span></li>
+                    <li><span class="id"><strong>Tercatat "Diabaikan"</strong> → baca alasannya (kata kunci / nominal tidak ditemukan), lalu tekan <em>Uji di Parser</em> untuk mencoba kata kunci atau format nominal.</span>
+                        <span class="en"><strong>Logged as "Ignored"</strong> → read the reason (no keyword / no amount), then tap <em>Test in Parser</em> to try keywords or the number format.</span></li>
+                    <li><span class="id"><strong>Aplikasi kloning</strong> (App Clone / Dual Apps / Ruang Kedua) tidak dapat dibaca dari profil utama — gunakan aplikasi bank/e-wallet versi utama di HP yang menjalankan PayHook.</span>
+                        <span class="en"><strong>Cloned apps</strong> (App Clone / Dual Apps / Second Space) cannot be read from the main profile — use the primary bank/e-wallet app on the phone running PayHook.</span></li>
+                </ul>
 
                 <h3><span class="id">Nominal terbaca salah / kosong?</span><span class="en">Amount
                         parsed wrong / empty?</span></h3>
