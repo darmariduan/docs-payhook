@@ -204,7 +204,7 @@
             amount: parseInt(elAmount.value, 10) || 0,
             source: src.name
         };
-        // Urutan field mengikuti WebhookSender.kt (v1.8–v1.9)
+        // Urutan field mengikuti WebhookSender.kt (v1.8–v1.10)
         payload[out ? "recipient" : "payer"] = who;
         payload.reference = "PH-" + ms;
         payload.timestamp = formatTimestamp(ms);
@@ -213,6 +213,9 @@
         payload.notification_title = elTitle.value;
         payload.notification_text = elText.value;
         payload.sent_by = "PayHook";
+        // v1.10 — field tambahan (simulator memakai contoh aplikasi Indonesia → IDR)
+        payload.currency = "IDR";
+        payload.amount_decimal = payload.amount;
         return payload;
     }
 

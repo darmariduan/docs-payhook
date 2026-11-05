@@ -77,8 +77,10 @@
                     class="en">Webhook Configuration</span></a>
             <a href="#aplikasi" class="nav-link"><span class="id">Aplikasi Didukung</span><span
                     class="en">Supported Apps</span></a>
-            <a href="#fitur-v19" class="nav-link"><span class="id">Fitur Baru v1.9</span><span
-                    class="en">What's New v1.9</span></a>
+            <a href="#fitur-v110" class="nav-link"><span class="id">Fitur Baru v1.10</span><span
+                    class="en">What's New v1.10</span></a>
+            <a href="#fitur-v19" class="nav-link"><span class="id">Fitur v1.9</span><span
+                    class="en">v1.9 Features</span></a>
             <a href="#fitur-baru" class="nav-link"><span class="id">Fitur v1.8</span><span
                     class="en">v1.8 Features</span></a>
             <a href="#telegram" class="nav-link"><span class="id">Tujuan Telegram</span><span
@@ -288,9 +290,9 @@
                         <strong class="id">PayHook membaca notifikasi</strong><strong
                             class="en">PayHook reads the notification</strong>
                         <span class="id">, mencocokkan kata kunci pembayaran masuk, dan mengekstrak
-                            nominal Rupiah.</span>
+                            nominal beserta mata uangnya.</span>
                         <span class="en">, matches incoming-payment keywords, and extracts the
-                            Rupiah amount.</span>
+                            amount and its currency.</span>
                     </li>
                     <li>
                         <strong class="id">PayHook mengirim webhook</strong><strong
@@ -601,9 +603,67 @@
                 </div>
             </section>
 
+            <!-- ============ FITUR BARU v1.10 ============ -->
+            <section class="doc" id="fitur-v110">
+                <h2><span class="id">Fitur Baru v1.10</span><span class="en">What's New in v1.10</span>
+                    <span class="badge on" style="vertical-align:middle;"><span class="id">Gratis</span><span class="en">Free</span></span>
+                </h2>
+                <p class="lead">
+                    <span class="id">Fokus v1.10: PayHook kini bisa dipakai di luar Indonesia — aplikasi dua bahasa dan mata uang terdeteksi otomatis dari notifikasi. <strong>Payload hanya bertambah</strong> dua field (<code>currency</code>, <code>amount_decimal</code>); field lama tidak berubah sehingga integrasi yang sudah berjalan tetap aman.</span>
+                    <span class="en">v1.10 makes PayHook usable outside Indonesia — a bilingual app and currencies detected automatically from notifications. <strong>The payload only gains</strong> two fields (<code>currency</code>, <code>amount_decimal</code>); existing fields are unchanged, so running integrations keep working.</span>
+                </p>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><span class="id">Fitur</span><span class="en">Feature</span></th>
+                                <th><span class="id">Kegunaan</span><span class="en">What it does</span></th>
+                                <th><span class="id">Lokasi di aplikasi</span><span class="en">Where in the app</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="id">Dua bahasa</span><span class="en">Two languages</span></td>
+                                <td><span class="id">English dan Indonesia. Default mengikuti bahasa HP (HP berbahasa Indonesia → Indonesia, lainnya → English). Notifikasi, widget, rekap harian, pesan Telegram, dan header Excel ikut bahasa aplikasi.</span><span class="en">English and Indonesian. By default it follows the phone language (Indonesian phones → Indonesian, others → English). Notifications, widget, daily recap, Telegram messages and Excel headers follow the app language.</span></td>
+                                <td><span class="id">Pengaturan → Bahasa</span><span class="en">Settings → Language</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Mata uang otomatis</span><span class="en">Automatic currency</span></td>
+                                <td><span class="id">Mata uang dibaca dari penanda di teks notifikasi: kode ISO 4217 (USD, KES, INR, …), simbol (<code>$</code>, <code>€</code>, <code>₦</code>, <code>₹</code>, …), dan nama lokal (Ksh, Rs., บาท, zł, …). Mendukung format angka dunia (<code>1,234.56</code>, <code>1.234,56</code>, <code>1 234,56</code>, <code>1,25,000</code>) serta angka Arab/Thai/Devanagari. Nominal saldo dan biaya dilewati. Tanpa penanda, dipakai mata uang buku kas.</span><span class="en">The currency is read from markers in the notification text: ISO 4217 codes (USD, KES, INR, …), symbols (<code>$</code>, <code>€</code>, <code>₦</code>, <code>₹</code>, …) and local names (Ksh, Rs., บาท, zł, …). World number formats (<code>1,234.56</code>, <code>1.234,56</code>, <code>1 234,56</code>, <code>1,25,000</code>) and Arabic/Thai/Devanagari digits are supported. Balance and fee amounts are skipped. Without a marker, the book currency is used.</span></td>
+                                <td><span class="id">Otomatis</span><span class="en">Automatic</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Penanda Mata Uang Tambahan</span><span class="en">Extra Currency Markers</span></td>
+                                <td><span class="id">Tambahkan penanda sendiri bila aplikasi Anda memakai tulisan yang belum dikenal (mis. <code>TSh</code> → <code>TZS</code>). Penanda pendek yang juga kata umum (mis. PLN, QR, RM, TL) hanya dianggap mata uang bila menempel pada angka atau sesuai negara HP.</span><span class="en">Add your own markers when your app uses a label that is not recognised (e.g. <code>TSh</code> → <code>TZS</code>). Short markers that are also common words (e.g. PLN, QR, RM, TL) only count as a currency when attached to the number or matching the phone's country.</span></td>
+                                <td><span class="id">Pengaturan → Kata Kunci Deteksi</span><span class="en">Settings → Detection Keywords</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Mata uang buku kas</span><span class="en">Cash book currency</span></td>
+                                <td><span class="id">Arus Kas menyimpan mata uang tiap transaksi. Total, saldo akun, rekap, dan widget dihitung dalam mata uang buku kas; transaksi mata uang lain tetap tampil tetapi tidak dijumlahkan. Batas min/maks webhook berlaku untuk mata uang buku kas. Pengguna lama otomatis tetap Rupiah.</span><span class="en">Cash Flow stores each entry's currency. Totals, account balances, recap and widget use the book currency; entries in other currencies are still shown but not summed. Webhook min/max limits apply to the book currency. Existing users stay on Rupiah automatically.</span></td>
+                                <td><span class="id">Pengaturan → Mata uang buku kas</span><span class="en">Settings → Cash book currency</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Uji Parser menampilkan mata uang</span><span class="en">Parser Tester shows currency</span></td>
+                                <td><span class="id">Hasil uji menampilkan mata uang dan penanda yang terdeteksi, misalnya <code>KES (penanda: Ksh)</code>.</span><span class="en">The result shows the detected currency and marker, e.g. <code>KES (marker: Ksh)</code>.</span></td>
+                                <td><span class="id">Pengaturan → Uji Parser</span><span class="en">Settings → Parser Tester</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Ekspor Excel saja</span><span class="en">Excel export only</span></td>
+                                <td><span class="id">Kolom <em>Mata Uang</em> ditambahkan; total memakai rumus per mata uang buku kas. Ekspor CSV dihapus.</span><span class="en">A <em>Currency</em> column is added; totals use a formula per book currency. CSV export has been removed.</span></td>
+                                <td><span class="id">Arus Kas → ⋮ → Ekspor</span><span class="en">Cash Flow → ⋮ → Export</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="callout">
+                    <span class="id"><strong>Untuk server:</strong> <code>amount</code> tetap bilangan bulat (bagian bulat nominal). Bila Anda menerima mata uang selain Rupiah atau nominal bersen, baca <code>currency</code> dan <code>amount_decimal</code> — lihat <a href="#payload">Format Payload</a>. Paket <code>payhook-laravel</code> v1.1 menyediakan <code>$payment-&gt;currency</code> dan <code>$payment-&gt;amountDecimal</code>.</span>
+                    <span class="en"><strong>For servers:</strong> <code>amount</code> stays an integer (the whole part). If you receive currencies other than Rupiah or amounts with cents, read <code>currency</code> and <code>amount_decimal</code> — see <a href="#payload">Payload Format</a>. The <code>payhook-laravel</code> v1.1 package exposes <code>$payment-&gt;currency</code> and <code>$payment-&gt;amountDecimal</code>.</span>
+                </div>
+            </section>
+
             <!-- ============ FITUR BARU v1.9 ============ -->
             <section class="doc" id="fitur-v19">
-                <h2><span class="id">Fitur Baru v1.9</span><span class="en">What's New in v1.9</span>
+                <h2><span class="id">Fitur v1.9</span><span class="en">v1.9 Features</span>
                     <span class="badge on" style="vertical-align:middle;"><span class="id">Gratis</span><span class="en">Free</span></span>
                 </h2>
                 <p class="lead">
@@ -647,7 +707,7 @@
                             </tr>
                             <tr>
                                 <td><span class="id">Ekspor Excel</span><span class="en">Excel export</span></td>
-                                <td><span class="id">File <code>.xlsx</code> asli: sheet Transaksi (kolom Tanggal, Jam, Jenis, Kategori, Akun Asal/Tujuan, Masuk, Keluar, Transfer, Pihak, No. Rek/ID, Keterangan, Sumber) dengan format Rupiah, baris total, header beku &amp; filter, plus sheet Ringkasan. CSV tetap tersedia dengan pemisah <code>;</code> agar langsung rapi di Excel berbahasa Indonesia.</span><span class="en">A real <code>.xlsx</code> file: a Transactions sheet (Date, Time, Type, Category, From/To Account, In, Out, Transfer, Party, Account No./ID, Note, Source) with Rupiah format, totals row, frozen header and filters, plus a Summary sheet. CSV remains available with a <code>;</code> separator for Indonesian-locale Excel.</span></td>
+                                <td><span class="id">File <code>.xlsx</code> asli: sheet Transaksi (kolom Tanggal, Jam, Jenis, Kategori, Akun Asal/Tujuan, Masuk, Keluar, Transfer, Pihak, No. Rek/ID, Keterangan, Sumber) dengan format Rupiah, baris total, header beku &amp; filter, plus sheet Ringkasan. <em>v1.10: kolom Mata Uang ditambahkan, ekspor CSV dihapus.</em></span><span class="en">A real <code>.xlsx</code> file: a Transactions sheet (Date, Time, Type, Category, From/To Account, In, Out, Transfer, Party, Account No./ID, Note, Source) with Rupiah format, totals row, frozen header and filters, plus a Summary sheet. <em>v1.10: a Currency column was added and CSV export removed.</em></span></td>
                                 <td><span class="id">Arus Kas → ⋮ → Ekspor</span><span class="en">Cash Flow → ⋮ → Export</span></td>
                             </tr>
                             <tr>
@@ -829,7 +889,7 @@ ID: evt_1793359440000_a1b2c3</code></pre>
                     <pre><code>POST /your-endpoint HTTP/1.1
 Content-Type: application/json
 Accept: application/json
-User-Agent: PayHook-Android/1.9.0
+User-Agent: PayHook-Android/1.10.0
 Authorization: Bearer &lt;token&gt;          # tergantung tipe auth / depends on auth type
 X-Payhook-Timestamp: 1752300000         # jika HMAC diaktifkan / if HMAC enabled
 X-Payhook-Nonce: 9f2c...                 # jika HMAC diaktifkan / if HMAC enabled
@@ -851,7 +911,9 @@ X-Payhook-Signature: sha256=&lt;hmac&gt;   # jika HMAC diaktifkan / if HMAC enab
   "package_name": "com.bca",
   "notification_title": "Uang masuk dari John",
   "notification_text": "Rp 300.000,00 sudah masuk dari JOHN ke rekening Anda",
-  "sent_by": "PayHook"
+  "sent_by": "PayHook",
+  "currency": "IDR",
+  "amount_decimal": 300000
 }</code></pre>
                 </div>
 
@@ -916,9 +978,9 @@ X-Payhook-Signature: sha256=&lt;hmac&gt;   # jika HMAC diaktifkan / if HMAC enab
                             <tr>
                                 <td><code>amount</code></td>
                                 <td>number (long)</td>
-                                <td><span class="id">Nominal Rupiah, bilangan bulat tanpa
-                                        desimal.</span><span class="en">Rupiah amount, integer
-                                        without decimals.</span></td>
+                                <td><span class="id">Nominal, bilangan bulat tanpa desimal (bagian bulat; $12.50 → <code>12</code>).
+                                        Sebelum v1.10 selalu Rupiah.</span><span class="en">Amount as an integer without
+                                        decimals (whole part; $12.50 → <code>12</code>). Always Rupiah before v1.10.</span></td>
                             </tr>
                             <tr>
                                 <td><code>source</code></td>
@@ -987,6 +1049,27 @@ X-Payhook-Signature: sha256=&lt;hmac&gt;   # jika HMAC diaktifkan / if HMAC enab
                                 <td><span class="id">Selalu bernilai
                                         <code>"PayHook"</code>.</span><span class="en">Always
                                         <code>"PayHook"</code>.</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>currency</code></td>
+                                <td>string</td>
+                                <td><span class="id">Kode mata uang ISO 4217, mis. <code>IDR</code>, <code>USD</code>,
+                                        <code>KES</code>. Dari penanda di notifikasi; tanpa penanda = mata uang buku kas.
+                                        Bila field ini tidak ada (PayHook &lt; v1.10), anggap <code>IDR</code>.
+                                        <em>v1.10+</em></span><span class="en">ISO 4217 currency code, e.g. <code>IDR</code>,
+                                        <code>USD</code>, <code>KES</code>. From the marker in the notification; no marker =
+                                        the book currency. If the field is missing (PayHook &lt; v1.10), assume
+                                        <code>IDR</code>. <em>v1.10+</em></span></td>
+                            </tr>
+                            <tr>
+                                <td><code>amount_decimal</code></td>
+                                <td>number</td>
+                                <td><span class="id">Nominal persis termasuk sen, mis. <code>12.5</code> untuk $12.50
+                                        (maks. 2 desimal). Untuk Rupiah sama dengan <code>amount</code>. Baca sebagai
+                                        desimal, bukan float, bila menghitung uang. <em>v1.10+</em></span><span
+                                        class="en">Exact amount including cents, e.g. <code>12.5</code> for $12.50 (max. 2
+                                        decimals). Equal to <code>amount</code> for Rupiah. Parse it as a decimal, not a
+                                        float, when doing money math. <em>v1.10+</em></span></td>
                             </tr>
                             <tr>
                                 <td><code>is_test</code></td>
@@ -1286,7 +1369,7 @@ X-Payhook-Signature: sha256=&lt;hmac&gt;  # jika secret diisi / if secret set
 {
   "type": "heartbeat",
   "device_id": "ph-a1b2c3d4e5f6",
-  "app_version": "1.9.0",
+  "app_version": "1.10.0",
   "listener_connected": true,
   "battery_optimized": false,
   "last_event_at": 1752299880000,
@@ -1532,6 +1615,8 @@ $total = PayHook::uniqueAmount(100000, fn (int $a) =&gt;
 Event::listen(function (PaymentReceived $e) {
     Invoice::where('unique_total', $e-&gt;payment-&gt;amount)
         -&gt;where('status', 'unpaid')-&gt;first()?-&gt;update(['status' =&gt; 'paid']);
+
+    // v1.1: $e-&gt;payment-&gt;currency ("IDR", "USD", …), $e-&gt;payment-&gt;amountDecimal ("12.5")
 });
 
 PayHook::isOnline('ph-a1b2c3d4e5f6'); // status heartbeat perangkat</code></pre>
