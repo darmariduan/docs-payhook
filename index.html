@@ -77,12 +77,8 @@
                     class="en">Webhook Configuration</span></a>
             <a href="#aplikasi" class="nav-link"><span class="id">Aplikasi Didukung</span><span
                     class="en">Supported Apps</span></a>
-            <a href="#fitur-v110" class="nav-link"><span class="id">Fitur Baru v1.10</span><span
-                    class="en">What's New v1.10</span></a>
-            <a href="#fitur-v19" class="nav-link"><span class="id">Fitur v1.9</span><span
-                    class="en">v1.9 Features</span></a>
-            <a href="#fitur-baru" class="nav-link"><span class="id">Fitur v1.8</span><span
-                    class="en">v1.8 Features</span></a>
+            <a href="#fitur" class="nav-link"><span class="id">Fitur v1.11</span><span
+                    class="en">Features (v1.11)</span></a>
             <a href="#telegram" class="nav-link"><span class="id">Tujuan Telegram</span><span
                     class="en">Telegram Destination</span></a>
 
@@ -603,17 +599,22 @@
                 </div>
             </section>
 
-            <!-- ============ FITUR BARU v1.10 ============ -->
-            <section class="doc" id="fitur-v110">
-                <h2><span class="id">Fitur Baru v1.10</span><span class="en">What's New in v1.10</span>
+            <!-- ============ FITUR v1.11 (ringkasan semua fitur) ============ -->
+            <section class="doc" id="fitur">
+                <!-- Anchor lama tetap berfungsi -->
+                <span id="fitur-v110"></span><span id="fitur-v19"></span><span id="fitur-baru"></span>
+                <h2><span class="id">Fitur v1.11</span><span class="en">Features (v1.11)</span>
                     <span class="badge on" style="vertical-align:middle;"><span class="id">Gratis</span><span class="en">Free</span></span>
                 </h2>
                 <p class="lead">
-                    <span class="id">Fokus v1.10: PayHook kini bisa dipakai di luar Indonesia — aplikasi dua bahasa dan mata uang terdeteksi otomatis dari notifikasi. <strong>Payload hanya bertambah</strong> dua field (<code>currency</code>, <code>amount_decimal</code>); field lama tidak berubah sehingga integrasi yang sudah berjalan tetap aman.</span>
-                    <span class="en">v1.10 makes PayHook usable outside Indonesia — a bilingual app and currencies detected automatically from notifications. <strong>The payload only gains</strong> two fields (<code>currency</code>, <code>amount_decimal</code>); existing fields are unchanged, so running integrations keep working.</span>
+                    <span class="id">Ringkasan semua fitur PayHook sampai versi 1.11. Semua gratis. <strong>Payload webhook kompatibel ke belakang</strong>: sejak v1.8 hanya bertambah field, tidak ada yang diubah atau dihapus, sehingga integrasi lama (termasuk <code>payhook-laravel</code>) tetap berjalan.</span>
+                    <span class="en">A summary of every PayHook feature up to version 1.11. All free. <strong>The webhook payload is backward compatible</strong>: since v1.8 fields have only been added, never changed or removed, so existing integrations (including <code>payhook-laravel</code>) keep working.</span>
                 </p>
+
+                <h3><span class="id">Baru di v1.11</span><span class="en">New in v1.11</span></h3>
                 <div class="table-wrap">
                     <table>
+                        <colgroup><col style="width:18%"><col><col style="width:24%"></colgroup>
                         <thead>
                             <tr>
                                 <th><span class="id">Fitur</span><span class="en">Feature</span></th>
@@ -623,203 +624,138 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><span class="id">Dua bahasa</span><span class="en">Two languages</span></td>
-                                <td><span class="id">English dan Indonesia. Default mengikuti bahasa HP (HP berbahasa Indonesia → Indonesia, lainnya → English). Notifikasi, widget, rekap harian, pesan Telegram, dan header Excel ikut bahasa aplikasi.</span><span class="en">English and Indonesian. By default it follows the phone language (Indonesian phones → Indonesian, others → English). Notifications, widget, daily recap, Telegram messages and Excel headers follow the app language.</span></td>
-                                <td><span class="id">Pengaturan → Bahasa</span><span class="en">Settings → Language</span></td>
+                                <td><span class="id">Mode Soundbox</span><span class="en">Soundbox Mode</span></td>
+                                <td><span class="id">HP mengumumkan setiap uang masuk dengan suara (<em>"Pembayaran diterima, dua puluh lima ribu rupiah"</em>) memakai text-to-speech bawaan Android, tanpa internet. Halaman Soundbox menampilkan layar <strong>LUNAS</strong> besar, total hari ini, dan layar tetap menyala. Bisa memilih aplikasi yang diumumkan dan nada sebelum suara. Nonaktif secara default; tetap bersuara walau aplikasi ditutup. Hanya uang masuk; notifikasi lebih dari 3 menit tidak diumumkan. Tidak membutuhkan webhook atau Telegram.</span><span class="en">The phone announces every incoming payment out loud (<em>"Payment received, twenty five thousand rupiah"</em>) using Android's built-in text-to-speech, offline. The Soundbox page shows a big <strong>PAID</strong> screen, today's total, and keeps the screen on. Choose which apps are announced and a chime before the voice. Off by default; keeps speaking even when the app is closed. Incoming money only; notifications older than 3 minutes are not announced. No webhook or Telegram needed.</span></td>
+                                <td><span class="id">Beranda → Soundbox</span><span class="en">Home → Soundbox</span></td>
                             </tr>
                             <tr>
-                                <td><span class="id">Mata uang otomatis</span><span class="en">Automatic currency</span></td>
-                                <td><span class="id">Mata uang dibaca dari penanda di teks notifikasi: kode ISO 4217 (USD, KES, INR, …), simbol (<code>$</code>, <code>€</code>, <code>₦</code>, <code>₹</code>, …), dan nama lokal (Ksh, Rs., บาท, zł, …). Mendukung format angka dunia (<code>1,234.56</code>, <code>1.234,56</code>, <code>1 234,56</code>, <code>1,25,000</code>) serta angka Arab/Thai/Devanagari. Nominal saldo dan biaya dilewati. Tanpa penanda, dipakai mata uang buku kas.</span><span class="en">The currency is read from markers in the notification text: ISO 4217 codes (USD, KES, INR, …), symbols (<code>$</code>, <code>€</code>, <code>₦</code>, <code>₹</code>, …) and local names (Ksh, Rs., บาท, zł, …). World number formats (<code>1,234.56</code>, <code>1.234,56</code>, <code>1 234,56</code>, <code>1,25,000</code>) and Arabic/Thai/Devanagari digits are supported. Balance and fee amounts are skipped. Without a marker, the book currency is used.</span></td>
-                                <td><span class="id">Otomatis</span><span class="en">Automatic</span></td>
+                                <td><span class="id">Peringatan kegagalan</span><span class="en">Failure alerts</span></td>
+                                <td><span class="id">Tujuan Telegram dapat menerima peringatan ⚠️ saat webhook ke server gagal permanen (mis. 401/404) atau batas percobaan ulang habis: nama tujuan, nominal, error, waktu, dan ID event. Token bot disamarkan.</span><span class="en">A Telegram destination can receive a ⚠️ alert when a webhook to your server fails permanently (e.g. 401/404) or runs out of retries: destination name, amount, error, time, and event ID. The bot token is masked.</span></td>
+                                <td><span class="id">Webhook → Edit tujuan Telegram → Peringatan kegagalan</span><span class="en">Webhook → Edit Telegram destination → Failure alerts</span></td>
                             </tr>
                             <tr>
-                                <td><span class="id">Penanda Mata Uang Tambahan</span><span class="en">Extra Currency Markers</span></td>
-                                <td><span class="id">Tambahkan penanda sendiri bila aplikasi Anda memakai tulisan yang belum dikenal (mis. <code>TSh</code> → <code>TZS</code>). Penanda pendek yang juga kata umum (mis. PLN, QR, RM, TL) hanya dianggap mata uang bila menempel pada angka atau sesuai negara HP.</span><span class="en">Add your own markers when your app uses a label that is not recognised (e.g. <code>TSh</code> → <code>TZS</code>). Short markers that are also common words (e.g. PLN, QR, RM, TL) only count as a currency when attached to the number or matching the phone's country.</span></td>
-                                <td><span class="id">Pengaturan → Kata Kunci Deteksi</span><span class="en">Settings → Detection Keywords</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="id">Mata uang buku kas</span><span class="en">Cash book currency</span></td>
-                                <td><span class="id">Arus Kas menyimpan mata uang tiap transaksi. Total, saldo akun, rekap, dan widget dihitung dalam mata uang buku kas; transaksi mata uang lain tetap tampil tetapi tidak dijumlahkan. Batas min/maks webhook berlaku untuk mata uang buku kas. Pengguna lama otomatis tetap Rupiah.</span><span class="en">Cash Flow stores each entry's currency. Totals, account balances, recap and widget use the book currency; entries in other currencies are still shown but not summed. Webhook min/max limits apply to the book currency. Existing users stay on Rupiah automatically.</span></td>
-                                <td><span class="id">Pengaturan → Mata uang buku kas</span><span class="en">Settings → Cash book currency</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="id">Uji Parser menampilkan mata uang</span><span class="en">Parser Tester shows currency</span></td>
-                                <td><span class="id">Hasil uji menampilkan mata uang dan penanda yang terdeteksi, misalnya <code>KES (penanda: Ksh)</code>.</span><span class="en">The result shows the detected currency and marker, e.g. <code>KES (marker: Ksh)</code>.</span></td>
-                                <td><span class="id">Pengaturan → Uji Parser</span><span class="en">Settings → Parser Tester</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="id">Ekspor Excel saja</span><span class="en">Excel export only</span></td>
-                                <td><span class="id">Kolom <em>Mata Uang</em> ditambahkan; total memakai rumus per mata uang buku kas. Ekspor CSV dihapus.</span><span class="en">A <em>Currency</em> column is added; totals use a formula per book currency. CSV export has been removed.</span></td>
-                                <td><span class="id">Arus Kas → ⋮ → Ekspor</span><span class="en">Cash Flow → ⋮ → Export</span></td>
+                                <td><span class="id">Tujuan paralel lebih aman</span><span class="en">Safer parallel destinations</span></td>
+                                <td><span class="id">Jenis tujuan (Webhook/Telegram) dikunci saat edit agar konfigurasi tidak tertimpa. Untuk server <em>dan</em> Telegram sekaligus, buat dua tujuan; semua tujuan aktif dikirim paralel. Ada tombol <em>Tambah Telegram</em> di daftar dan <em>Duplikat</em> di layar edit (salinan dibuat nonaktif).</span><span class="en">The destination type (Webhook/Telegram) is locked while editing so settings are not overwritten. For a server <em>and</em> Telegram, create two destinations; all active destinations are sent in parallel. There is an <em>Add Telegram</em> button in the list and <em>Duplicate</em> on the edit screen (copies start disabled).</span></td>
+                                <td><span class="id">Webhook</span><span class="en">Webhook</span></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="callout">
-                    <span class="id"><strong>Untuk server:</strong> <code>amount</code> tetap bilangan bulat (bagian bulat nominal). Bila Anda menerima mata uang selain Rupiah atau nominal bersen, baca <code>currency</code> dan <code>amount_decimal</code> — lihat <a href="#payload">Format Payload</a>. Paket <code>payhook-laravel</code> v1.1 menyediakan <code>$payment-&gt;currency</code> dan <code>$payment-&gt;amountDecimal</code>.</span>
-                    <span class="en"><strong>For servers:</strong> <code>amount</code> stays an integer (the whole part). If you receive currencies other than Rupiah or amounts with cents, read <code>currency</code> and <code>amount_decimal</code> — see <a href="#payload">Payload Format</a>. The <code>payhook-laravel</code> v1.1 package exposes <code>$payment-&gt;currency</code> and <code>$payment-&gt;amountDecimal</code>.</span>
-                </div>
-            </section>
 
-            <!-- ============ FITUR BARU v1.9 ============ -->
-            <section class="doc" id="fitur-v19">
-                <h2><span class="id">Fitur v1.9</span><span class="en">v1.9 Features</span>
-                    <span class="badge on" style="vertical-align:middle;"><span class="id">Gratis</span><span class="en">Free</span></span>
-                </h2>
-                <p class="lead">
-                    <span class="id">Fokus v1.9: buku kas yang rapi untuk pembukuan dan alat untuk melacak notifikasi yang tidak tertangkap. <strong>Payload webhook tidak berubah</strong> — integrasi yang sudah berjalan (termasuk <code>payhook-laravel</code>) tidak perlu diubah.</span>
-                    <span class="en">v1.9 focuses on a proper cash book for bookkeeping and tools to trace missed notifications. <strong>The webhook payload is unchanged</strong> — existing integrations (including <code>payhook-laravel</code>) need no changes.</span>
-                </p>
+                <h3><span class="id">Pengiriman &amp; tujuan</span><span class="en">Delivery &amp; destinations</span></h3>
                 <div class="table-wrap">
                     <table>
-                        <thead>
-                            <tr>
-                                <th><span class="id">Fitur</span><span class="en">Feature</span></th>
-                                <th><span class="id">Kegunaan</span><span class="en">What it does</span></th>
-                                <th><span class="id">Lokasi di aplikasi</span><span class="en">Where in the app</span></th>
-                            </tr>
-                        </thead>
+                        <colgroup><col style="width:18%"><col><col style="width:24%"></colgroup>
                         <tbody>
-                            <tr>
-                                <td><span class="id">Kirim Test Live</span><span class="en">Send Live Test</span></td>
-                                <td><span class="id">Kirim hasil Uji Parser ke webhook/Telegram sungguhan dengan <code>"is_test": true</code>, lalu lihat kode HTTP, waktu respons, dan isi balasan server. Tidak dicatat ke Arus Kas maupun Log Aktivitas.</span><span class="en">Send the Parser Tester result to a real webhook/Telegram with <code>"is_test": true</code> and see the HTTP code, response time, and response body. Not recorded in Cash Flow or the Activity Log.</span></td>
-                                <td><span class="id">Pengaturan → Uji Parser</span><span class="en">Settings → Parser Tester</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="id">Akun &amp; dompet</span><span class="en">Accounts &amp; wallets</span></td>
-                                <td><span class="id">Kas Tunai, rekening bank, e-wallet dengan saldo awal &amp; saldo berjalan. Tiap aplikasi terpantau dapat dipetakan ke satu akun.</span><span class="en">Cash, bank, and e-wallet accounts with opening and running balances. Each monitored app can be mapped to an account.</span></td>
-                                <td><span class="id">Arus Kas → ⋮ → Kelola akun</span><span class="en">Cash Flow → ⋮ → Manage accounts</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="id">Pemasukan, Pengeluaran, Transfer</span><span class="en">Income, Expense, Transfer</span></td>
-                                <td><span class="id">Catat manual dengan pilihan akun asal/tujuan, tanggal &amp; jam. Transfer antar akun (mis. tarik tunai) tidak dihitung sebagai pemasukan/pengeluaran.</span><span class="en">Manual entries with source/destination account, date and time. Transfers between accounts (e.g. ATM withdrawal) are not counted as income/expense.</span></td>
-                                <td><span class="id">Arus Kas → Catat</span><span class="en">Cash Flow → Add</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="id">Kategori berikon</span><span class="en">Icon categories</span></td>
-                                <td><span class="id">Kategori terpisah untuk pemasukan &amp; pengeluaran, tampil sebagai grid ikon; bisa ditambah, diganti nama, disembunyikan.</span><span class="en">Separate income and expense categories shown as an icon grid; add, rename, or hide them.</span></td>
-                                <td><span class="id">Arus Kas → ⋮ → Kelola kategori</span><span class="en">Cash Flow → ⋮ → Manage categories</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="id">Cari &amp; filter</span><span class="en">Search &amp; filters</span></td>
-                                <td><span class="id">Cari nama/catatan; filter jenis, akun, kategori, dan rentang tanggal bebas.</span><span class="en">Search names/notes; filter by type, account, category, and any date range.</span></td>
-                                <td><span class="id">Arus Kas → ikon cari</span><span class="en">Cash Flow → search icon</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="id">Ekspor Excel</span><span class="en">Excel export</span></td>
-                                <td><span class="id">File <code>.xlsx</code> asli: sheet Transaksi (kolom Tanggal, Jam, Jenis, Kategori, Akun Asal/Tujuan, Masuk, Keluar, Transfer, Pihak, No. Rek/ID, Keterangan, Sumber) dengan format Rupiah, baris total, header beku &amp; filter, plus sheet Ringkasan. <em>v1.10: kolom Mata Uang ditambahkan, ekspor CSV dihapus.</em></span><span class="en">A real <code>.xlsx</code> file: a Transactions sheet (Date, Time, Type, Category, From/To Account, In, Out, Transfer, Party, Account No./ID, Note, Source) with Rupiah format, totals row, frozen header and filters, plus a Summary sheet. <em>v1.10: a Currency column was added and CSV export removed.</em></span></td>
-                                <td><span class="id">Arus Kas → ⋮ → Ekspor</span><span class="en">Cash Flow → ⋮ → Export</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="id">Log Diagnostik</span><span class="en">Diagnostics log</span></td>
-                                <td><span class="id">Setiap notifikasi dari aplikasi terpantau tercatat beserta hasilnya (diproses / diabaikan + alasan), plus aplikasi belum terpantau yang mengirim nominal. Tombol <em>Uji di Parser</em> untuk mencoba ulang teksnya. Lokal, 7 hari; isi bernada OTP tidak disimpan.</span><span class="en">Every notification from monitored apps is logged with its outcome (processed / ignored + reason), plus unmonitored apps that send amounts. <em>Test in Parser</em> replays the text. Local only, 7 days; OTP-like content is not stored.</span></td>
-                                <td><span class="id">Pengaturan → Log Diagnostik Notifikasi</span><span class="en">Settings → Notification Diagnostics Log</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="id">Status listener nyata</span><span class="en">Real listener status</span></td>
-                                <td><span class="id">Beranda kini menampilkan <em>Listener Terputus</em> bila izin ada tetapi sistem tidak menyambungkan PayHook. Kesehatan Perangkat menampilkan kapan notifikasi terakhir diterima dan panduan khusus Realme/Oppo/OnePlus, Vivo, Xiaomi, Infinix/Tecno.</span><span class="en">Home now shows <em>Listener Disconnected</em> when permission is granted but the system has not bound PayHook. Device Health shows when the last notification arrived plus brand-specific guides.</span></td>
-                                <td><span class="id">Beranda → Cek HP</span><span class="en">Home → Check</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="id">Pembacaan notifikasi lebih luas</span><span class="en">Broader notification reading</span></td>
-                                <td><span class="id">Teks juga dibaca dari gaya notifikasi daftar/pesan/ticker; notifikasi ringkasan grup dilewati agar tidak ganda.</span><span class="en">Text is also read from inbox/messaging/ticker styles; group summaries are skipped to avoid duplicates.</span></td>
-                                <td><span class="id">Otomatis</span><span class="en">Automatic</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="id">Penyempurnaan tampilan</span><span class="en">UI polish</span></td>
-                                <td><span class="id">Tombol aksi cepat seragam, pemindai QR backup tegak (portrait), jam rekap harian bisa dipilih jam &amp; menit.</span><span class="en">Uniform quick-action buttons, portrait QR backup scanner, daily recap time with hour &amp; minute.</span></td>
-                                <td>—</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="callout">
-                    <span class="id"><strong>Catatan:</strong> sejak v1.9 catatan Arus Kas tidak lagi dihapus otomatis (saldo akun dihitung dari riwayatnya). Backup kini juga menyertakan akun &amp; kategori.</span>
-                    <span class="en"><strong>Note:</strong> since v1.9 cash-flow entries are no longer auto-deleted (account balances depend on their history). Backups now include accounts and categories.</span>
-                </div>
-            </section>
-
-            <!-- ============ FITUR BARU v1.8 ============ -->
-            <section class="doc" id="fitur-baru">
-                <h2><span class="id">Fitur v1.8</span><span class="en">v1.8 Features</span>
-                    <span class="badge on" style="vertical-align:middle;"><span class="id">Gratis</span><span class="en">Free</span></span>
-                </h2>
-                <p class="lead">
-                    <span class="id">Semua fitur tetap gratis. Ringkasan dan cara pakainya:</span>
-                    <span class="en">Every feature remains free. Summary and how to use them:</span>
-                </p>
-                <div class="table-wrap">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th><span class="id">Fitur</span><span class="en">Feature</span></th>
-                                <th><span class="id">Kegunaan</span><span class="en">What it does</span></th>
-                                <th><span class="id">Lokasi di aplikasi</span><span class="en">Where in the app</span></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><span class="id">Perbaikan nominal BNI</span><span class="en">BNI amount fix</span></td>
-                                <td><span class="id"><code>Rp 1,000</code> (koma sebagai ribuan) kini terbaca Rp 1.000, bukan Rp 1.</span><span class="en"><code>Rp 1,000</code> (comma thousands) now parses as Rp 1,000, not Rp 1.</span></td>
-                                <td><span class="id">Otomatis</span><span class="en">Automatic</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="id">Format nominal per aplikasi</span><span class="en">Per-app number format</span></td>
-                                <td><span class="id">Paksa titik/koma sebagai ribuan untuk aplikasi dengan format tidak biasa.</span><span class="en">Force dot/comma thousands for apps with unusual formats.</span></td>
-                                <td><span class="id">Pengaturan → Aplikasi Terpantau</span><span class="en">Settings → Monitored Apps</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="id">Uji Parser</span><span class="en">Parser Tester</span></td>
-                                <td><span class="id">Tempel teks notifikasi lalu lihat arah, nominal, pengirim, dan webhook tujuan — tanpa mengirim apa pun.</span><span class="en">Paste a notification text and see direction, amount, sender, and target webhooks — nothing is sent.</span></td>
-                                <td><span class="id">Pengaturan → Uji Parser</span><span class="en">Settings → Parser Tester</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="id">Pengirim / penerima</span><span class="en">Payer / recipient</span></td>
-                                <td><span class="id">Field <code>payer</code> / <code>recipient</code> di payload.</span><span class="en"><code>payer</code> / <code>recipient</code> payload fields.</span></td>
-                                <td><span class="id">Otomatis</span><span class="en">Automatic</span></td>
-                            </tr>
                             <tr>
                                 <td><span class="id">Routing &amp; filter</span><span class="en">Routing &amp; filters</span></td>
-                                <td><span class="id">Pilih aplikasi sumber per webhook (mis. BNI → HMS, DANA → POS), batas nominal min/maks, dan opsi teruskan uang keluar.</span><span class="en">Pick source apps per webhook (e.g. BNI → HMS, DANA → POS), min/max amount, and optionally forward outgoing money.</span></td>
+                                <td><span class="id">Pilih aplikasi sumber per tujuan (mis. BNI → HMS, DANA → POS), batas nominal min/maks (dalam mata uang buku kas), dan opsi teruskan uang keluar.</span><span class="en">Pick source apps per destination (e.g. BNI → HMS, DANA → POS), min/max amount (in the book currency), and optionally forward outgoing money.</span></td>
                                 <td><span class="id">Webhook → Edit → Aturan Pengiriman</span><span class="en">Webhook → Edit → Delivery Rules</span></td>
                             </tr>
                             <tr>
                                 <td>Telegram</td>
-                                <td><span class="id">Kirim pemberitahuan pembayaran ke grup Telegram tanpa server.</span><span class="en">Send payment alerts to a Telegram group without a server.</span></td>
+                                <td><span class="id">Pesan pembayaran ke grup/chat Telegram tanpa server, dalam bahasa aplikasi.</span><span class="en">Payment messages to a Telegram group/chat without a server, in the app language.</span></td>
                                 <td><a href="#telegram"><span class="id">Lihat panduan</span><span class="en">See guide</span></a></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Kirim Test Live</span><span class="en">Send Live Test</span></td>
+                                <td><span class="id">Kirim hasil Uji Parser ke tujuan sungguhan dengan <code>"is_test": true</code>, lalu lihat kode HTTP, waktu respons, dan balasan server. Tidak dicatat ke Arus Kas maupun Log Aktivitas.</span><span class="en">Send a Parser Tester result to a real destination with <code>"is_test": true</code> and see the HTTP code, response time, and server reply. Not recorded in Cash Flow or the Activity Log.</span></td>
+                                <td><span class="id">Pengaturan → Uji Parser</span><span class="en">Settings → Parser Tester</span></td>
                             </tr>
                             <tr>
                                 <td><span class="id">Multi heartbeat</span><span class="en">Multiple heartbeats</span></td>
                                 <td><span class="id">Pantau beberapa server dari satu HP.</span><span class="en">Monitor several servers from one phone.</span></td>
-                                <td><span class="id">Pengaturan → Heartbeat Monitoring</span><span class="en">Settings → Heartbeat Monitoring</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="id">Arus kas</span><span class="en">Cash flow</span></td>
-                                <td><span class="id">Laporan uang masuk &amp; keluar per hari/minggu/bulan, kategori, catatan manual, ekspor CSV. Data hanya di HP. <em>v1.9: akun, transfer &amp; ekspor Excel — <a href="#fitur-v19">lihat</a>.</em></span><span class="en">Income &amp; expense report by day/week/month, categories, manual entries, CSV export. Data stays on the phone. <em>v1.9: accounts, transfers &amp; Excel export — <a href="#fitur-v19">see</a>.</em></span></td>
-                                <td><span class="id">Beranda → Arus kas hari ini</span><span class="en">Home → Today's cash flow</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="id">Rekap harian</span><span class="en">Daily recap</span></td>
-                                <td><span class="id">Notifikasi ringkasan setiap malam (opsional, aktifkan di pengaturan; jam bisa diatur).</span><span class="en">Nightly summary notification (opt-in; configurable hour).</span></td>
-                                <td><span class="id">Pengaturan → Rekap harian</span><span class="en">Settings → Daily recap</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="id">Kesehatan perangkat</span><span class="en">Device health</span></td>
-                                <td><span class="id">Cek akses notifikasi, listener, optimasi baterai, penghemat data, dan autostart (Xiaomi/Oppo/Vivo/dll).</span><span class="en">Checks notification access, listener, battery optimization, data saver, and OEM autostart.</span></td>
-                                <td><span class="id">Beranda → Cek</span><span class="en">Home → Check</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="id">Backup &amp; pindah HP</span><span class="en">Backup &amp; device transfer</span></td>
-                                <td><span class="id">Konfigurasi terenkripsi AES-256 (password) ke file atau QR.</span><span class="en">AES-256 encrypted (password) configuration to a file or QR code.</span></td>
-                                <td><span class="id">Pengaturan → Backup &amp; Pindah HP</span><span class="en">Settings → Backup &amp; Transfer</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="id">Widget &amp; kunci PIN</span><span class="en">Widget &amp; PIN lock</span></td>
-                                <td><span class="id">Widget status + transaksi terakhir; kunci aplikasi dengan PIN/sidik jari.</span><span class="en">Status + last transaction widget; lock the app with PIN/biometrics.</span></td>
-                                <td><span class="id">Pengaturan → Privasi &amp; Kunci</span><span class="en">Settings → Privacy &amp; Lock</span></td>
+                                <td><a href="#heartbeat"><span class="id">Heartbeat Monitoring</span><span class="en">Heartbeat Monitoring</span></a></td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+
+                <h3><span class="id">Deteksi notifikasi</span><span class="en">Notification detection</span></h3>
+                <div class="table-wrap">
+                    <table>
+                        <colgroup><col style="width:18%"><col><col style="width:24%"></colgroup>
+                        <tbody>
+                            <tr>
+                                <td><span class="id">Mata uang &amp; format angka</span><span class="en">Currency &amp; number formats</span></td>
+                                <td><span class="id">Mata uang dibaca otomatis dari kode ISO 4217 (USD, KES, …), simbol (<code>$</code>, <code>€</code>, <code>₹</code>, …), dan nama lokal (Ksh, Rs., บาท, …). Mendukung <code>1,234.56</code>, <code>1.234,56</code>, <code>1 234,56</code>, <code>1,25,000</code>, termasuk <code>Rp 1,000</code> ala BNI, serta angka Arab/Thai/Devanagari. Nominal saldo dan biaya dilewati; tanpa penanda dipakai mata uang buku kas.</span><span class="en">Currency is detected from ISO 4217 codes (USD, KES, …), symbols (<code>$</code>, <code>€</code>, <code>₹</code>, …) and local names (Ksh, Rs., บาท, …). Supports <code>1,234.56</code>, <code>1.234,56</code>, <code>1 234,56</code>, <code>1,25,000</code>, BNI-style <code>Rp 1,000</code>, and Arabic/Thai/Devanagari digits. Balance and fee amounts are skipped; without a marker the book currency is used.</span></td>
+                                <td><span class="id">Otomatis</span><span class="en">Automatic</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Kata kunci &amp; penanda</span><span class="en">Keywords &amp; markers</span></td>
+                                <td><span class="id">Atur kata kunci uang masuk/keluar dan tambahkan penanda mata uang sendiri (mis. <code>TSh</code> → <code>TZS</code>). Format titik/koma bisa dipaksa per aplikasi.</span><span class="en">Edit incoming/outgoing keywords and add your own currency markers (e.g. <code>TSh</code> → <code>TZS</code>). Dot/comma format can be forced per app.</span></td>
+                                <td><span class="id">Pengaturan → Kata Kunci Deteksi / Aplikasi Terpantau</span><span class="en">Settings → Detection Keywords / Monitored Apps</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Uji Parser</span><span class="en">Parser Tester</span></td>
+                                <td><span class="id">Tempel teks notifikasi untuk melihat arah, nominal, mata uang (beserta penandanya), pengirim, dan tujuan yang akan menerima.</span><span class="en">Paste a notification to see direction, amount, currency (with its marker), sender, and which destinations would receive it.</span></td>
+                                <td><span class="id">Pengaturan → Uji Parser</span><span class="en">Settings → Parser Tester</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Log Diagnostik</span><span class="en">Diagnostics log</span></td>
+                                <td><span class="id">Setiap notifikasi dari aplikasi terpantau tercatat beserta hasilnya (diproses / diabaikan + alasan), plus aplikasi belum terpantau yang mengirim nominal. Lokal, 7 hari; isi bernada OTP tidak disimpan.</span><span class="en">Every notification from monitored apps is logged with its outcome (processed / ignored + reason), plus unmonitored apps that send amounts. Local, 7 days; OTP-like content is not stored.</span></td>
+                                <td><span class="id">Pengaturan → Log Diagnostik Notifikasi</span><span class="en">Settings → Notification Diagnostics Log</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3><span class="id">Buku kas</span><span class="en">Cash book</span></h3>
+                <div class="table-wrap">
+                    <table>
+                        <colgroup><col style="width:18%"><col><col style="width:24%"></colgroup>
+                        <tbody>
+                            <tr>
+                                <td><span class="id">Arus Kas</span><span class="en">Cash Flow</span></td>
+                                <td><span class="id">Laporan uang masuk/keluar per hari/minggu/bulan. Akun &amp; dompet (tunai, bank, e-wallet) dengan saldo berjalan, transfer antar akun, kategori berikon, cari &amp; filter. Total dihitung dalam mata uang buku kas. Data hanya di HP dan tidak dihapus otomatis.</span><span class="en">Income/expense report by day/week/month. Accounts &amp; wallets (cash, bank, e-wallet) with running balances, transfers between accounts, icon categories, search &amp; filters. Totals use the book currency. Data stays on the phone and is not auto-deleted.</span></td>
+                                <td><span class="id">Beranda → Arus kas</span><span class="en">Home → Cash flow</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Ekspor Excel</span><span class="en">Excel export</span></td>
+                                <td><span class="id">File <code>.xlsx</code> dengan sheet Transaksi (termasuk kolom Mata Uang, baris total, header beku &amp; filter) dan sheet Ringkasan. Header ikut bahasa aplikasi.</span><span class="en">An <code>.xlsx</code> file with a Transactions sheet (including a Currency column, totals row, frozen header &amp; filters) and a Summary sheet. Headers follow the app language.</span></td>
+                                <td><span class="id">Arus Kas → ⋮ → Ekspor</span><span class="en">Cash Flow → ⋮ → Export</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Rekap harian</span><span class="en">Daily recap</span></td>
+                                <td><span class="id">Notifikasi ringkasan harian pada jam &amp; menit pilihan (opsional).</span><span class="en">Daily summary notification at a chosen hour &amp; minute (opt-in).</span></td>
+                                <td><span class="id">Pengaturan → Rekap harian</span><span class="en">Settings → Daily recap</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3><span class="id">Keandalan, keamanan &amp; tampilan</span><span class="en">Reliability, security &amp; display</span></h3>
+                <div class="table-wrap">
+                    <table>
+                        <colgroup><col style="width:18%"><col><col style="width:24%"></colgroup>
+                        <tbody>
+                            <tr>
+                                <td><span class="id">Kesehatan perangkat</span><span class="en">Device health</span></td>
+                                <td><span class="id">Cek akses notifikasi, status listener nyata (<em>Listener Terputus</em>), optimasi baterai, penghemat data, autostart, serta panduan khusus Xiaomi, Oppo/Realme/OnePlus, Vivo, Infinix/Tecno.</span><span class="en">Checks notification access, real listener status (<em>Listener Disconnected</em>), battery optimization, data saver, autostart, plus brand guides for Xiaomi, Oppo/Realme/OnePlus, Vivo, Infinix/Tecno.</span></td>
+                                <td><span class="id">Beranda → Cek HP</span><span class="en">Home → Check</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Backup &amp; pindah HP</span><span class="en">Backup &amp; device transfer</span></td>
+                                <td><span class="id">Konfigurasi, akun, kategori, dan pengaturan Soundbox dienkripsi AES-256 (password) ke file atau QR.</span><span class="en">Configuration, accounts, categories, and Soundbox settings encrypted with AES-256 (password) to a file or QR code.</span></td>
+                                <td><span class="id">Pengaturan → Backup &amp; Pindah HP</span><span class="en">Settings → Backup &amp; Transfer</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Widget &amp; kunci aplikasi</span><span class="en">Widget &amp; app lock</span></td>
+                                <td><span class="id">Widget status + transaksi terakhir; kunci aplikasi dengan PIN/sidik jari.</span><span class="en">Status + last transaction widget; lock the app with PIN/biometrics.</span></td>
+                                <td><span class="id">Pengaturan → Privasi &amp; Kunci</span><span class="en">Settings → Privacy &amp; Lock</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="id">Dua bahasa</span><span class="en">Two languages</span></td>
+                                <td><span class="id">Indonesia dan English, default mengikuti bahasa HP. Notifikasi, widget, rekap, pesan Telegram, suara Soundbox, dan Excel ikut bahasa aplikasi.</span><span class="en">Indonesian and English, defaulting to the phone language. Notifications, widget, recap, Telegram messages, Soundbox voice, and Excel follow the app language.</span></td>
+                                <td><span class="id">Pengaturan → Bahasa</span><span class="en">Settings → Language</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout">
+                    <span class="id"><strong>Untuk server:</strong> v1.11 tidak mengubah payload. <code>amount</code> tetap bilangan bulat; untuk mata uang selain Rupiah atau nominal bersen, baca <code>currency</code> dan <code>amount_decimal</code> (v1.10+). Field <code>payer</code>/<code>recipient</code> tersedia sejak v1.8. Lihat <a href="#payload">Format Payload</a>; paket <code>payhook-laravel</code> v1.1 menyediakan <code>$payment-&gt;currency</code> dan <code>$payment-&gt;amountDecimal</code>.</span>
+                    <span class="en"><strong>For servers:</strong> v1.11 does not change the payload. <code>amount</code> stays an integer; for non-Rupiah currencies or amounts with cents, read <code>currency</code> and <code>amount_decimal</code> (v1.10+). <code>payer</code>/<code>recipient</code> fields exist since v1.8. See <a href="#payload">Payload Format</a>; the <code>payhook-laravel</code> v1.1 package exposes <code>$payment-&gt;currency</code> and <code>$payment-&gt;amountDecimal</code>.</span>
                 </div>
             </section>
 
@@ -852,6 +788,14 @@
                             class="en">In PayHook: <strong>Webhook → Add → Destination: Telegram</strong>,
                             fill token &amp; Chat ID, tap <strong>Send Test Message</strong>.</span></li>
                 </ol>
+                <p>
+                    <span class="id"><strong>Server dan Telegram sekaligus:</strong> satu tujuan hanya satu jenis. Buat tujuan Webhook untuk server dan tujuan Telegram terpisah; semua tujuan aktif menerima setiap pembayaran secara paralel. Telegram juga bisa dipakai sendiri tanpa server.</span>
+                    <span class="en"><strong>Server and Telegram together:</strong> each destination has one type. Create a Webhook destination for your server and a separate Telegram destination; every active destination receives each payment in parallel. Telegram also works on its own without a server.</span>
+                </p>
+                <p>
+                    <span class="id"><strong>Peringatan kegagalan (v1.11):</strong> aktifkan pada tujuan Telegram agar menerima pesan ⚠️ bila webhook ke server gagal permanen atau batas percobaan ulang habis.</span>
+                    <span class="en"><strong>Failure alerts (v1.11):</strong> enable on a Telegram destination to get a ⚠️ message when a webhook to your server fails permanently or runs out of retries.</span>
+                </p>
                 <div class="code-block">
                     <pre><code>💰 Pembayaran Masuk
 Rp 25.000
